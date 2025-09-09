@@ -13,8 +13,8 @@
 - application.yml 설정
 
 ### 컨트롤러 선행 작업 (애플리케이션 정상 동작 여부 확인을 하기 위해서)
-- [] VisitController, PatientController
-- [] 통신 기능만 확인
+- [x] VisitController, PatientController
+- [x] 통신 기능만 확인 (.http 파일로 대체)
 
 ### Entity 작업
 - [] Hospital, Patient, Visit

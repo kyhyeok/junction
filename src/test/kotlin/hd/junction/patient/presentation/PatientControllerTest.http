@@ -1,0 +1,23 @@
+### 환자 등록
+POST http://localhost:8080/api/v1/patients
+Content-Type: application/json
+
+### 환자 수정
+PATCH http://localhost:8080/api/v1/patients
+Content-Type: application/json
+
+### 환자 삭제
+DELETE http://localhost:8080/api/v1/patients
+Content-Type: application/json
+
+### 환자 조회 1
+GET http://localhost:8080/api/v1/patients/1
+Content-Type: application/json
+
+### 환자 조회 2
+GET http://localhost:8080/api/v1/patients/2
+Content-Type: application/json
+
+### 환자 조회 페이징 및 검색
+GET http://localhost:8080/api/v1/patients
+Content-Type: application/json
