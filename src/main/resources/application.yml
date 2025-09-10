@@ -12,10 +12,16 @@ spring:
     database-platform: org.hibernate.dialect.H2Dialect
     hibernate:
       ddl-auto: create
+    defer-datasource-initialization: true
     show-sql: true
     properties:
       hibernate:
         format_sql: true
+
+  sql:
+    init:
+      mode: always
+      data-locations: classpath:data.sql
 
   h2:
     console:

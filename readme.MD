@@ -29,12 +29,23 @@
 - [x] PatientRepository, HospitalRepository, VisitRepository
 
 
+### 환자 등록 작업을 하기 위한 선행 작업
+- [x] codesRepository 구현 작업 
+- [x] 환자의 성별코드 입력을 위한 코드그룹, 코드는 data.sql로 insert 작업
+- [x] 환자의 병원ID 입력을 위한 병원 데이터 insert 작업
+- [x] 환자 service에서 코드와 병원 데이터 확인하기
+
+
 ### 환자 등록 작업
-- [] PatientCreateRequestDto 구현
-- [] PatientResponseDto 구현
-- [] PatientService.createPatient() 메서드 구현
-- [] PatientController.createPatient() 메서드 구현
-- [] 테스트 코트 작성 및 http 파일로 테스트
+- [x] PatientCreateRequestDto 구현
+- [x] PatientService.createPatient() 메서드 구현
+- [x] PatientController.createPatient() 메서드 구현
+- [x] PatientResponseDto, HospitalResponseDto 구현
+- [] 테스트 코트 작성 (성별 코드, 병원 ID, 환자 저장)
+- [] PatientCreateRequestDto validations 구현
+- [] 환자등록번호 중복 처리 작업
+- [] 테스트 코트 작성 (request validation, 환자등록번호 종북), http 파일로 테스트
+- [] 리팩토링
 
 
 ### 환자 수정 작업
@@ -73,7 +84,6 @@
 
 
 ### 테스트 데이터 작업 및 API 작동 확인 작업
-- [] 코드그룹, 코드는 data.sql로 insert 작업
 - [] 병원, 환자, 환자방문 테스트 데이터 dateInitializer 작업
 - [] PatientControllerTest.http로 API 확인 작업
   - [] 등록 확인 작업

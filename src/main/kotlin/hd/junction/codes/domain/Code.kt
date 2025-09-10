@@ -31,7 +31,7 @@ class Code(
 @Entity
 @Table(name = "code_group")
 class CodeGroup(
-    @Column(length = 10, nullable = false)
+    @Column(length = 100, nullable = false)
     val description: String,
 
     @Column(length = 10, nullable = false)

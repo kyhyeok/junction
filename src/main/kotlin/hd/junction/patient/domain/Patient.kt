@@ -14,7 +14,7 @@ class Patient(
     @Column(length = 45, nullable = false)
     val patientName: String,
 
-    @Column(length = 13, nullable = false)
+    @Column(length = 13, nullable = false, unique = true)
     val patientRegistrationNumber: String,
 
     @Column(length = 10, nullable = false)
@@ -31,10 +31,11 @@ class Patient(
     val hospital: Hospital,
 
     @OneToMany(mappedBy = "patient", cascade = [ALL], orphanRemoval = true)
-    val visits: MutableList<Visit> = mutableListOf(),
+    var visits: MutableList<Visit> = mutableListOf(),
 
     @Id
     @GeneratedValue(strategy = IDENTITY)
     val id: Long? = null,
 ) {
+
 }
