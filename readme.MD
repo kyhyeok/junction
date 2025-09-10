@@ -22,7 +22,7 @@
 
 ### Entity 작업
 - [x] Patient, Hospital, Visit (연관관계 매핑하기, 데이터베이스 확인)
-- [] CodeGroup, Codes (연관관계 매핑하기, 데이터베이스 확인)
+- [x] CodeGroup, Codes (연관관계 매핑하기, 데이터베이스 확인)
 
 
 ### Repository 작업
@@ -39,7 +39,6 @@
 
 ### 환자 수정 작업
 - [] PatientUpdateRequestDto 구현
-- [] PatientResponseDto 구현
 - [] PatientEntity.update() 메서드 구현
 - [] PatientService.updatePatient() 메서드 구현
 - [] PatientController.updatePatient() 메서드 구현

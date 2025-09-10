@@ -9,7 +9,7 @@ import java.time.LocalDate
 
 @Entity
 @Table(name = "visit")
-class Visit constructor(
+class Visit(
     @Column(length = 10, nullable = false)
     val reservationDate: LocalDate,
 
