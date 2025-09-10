@@ -26,7 +26,7 @@
 
 
 ### Repository 작업
-- [] PatientRepository, HospitalRepository, VisitRepository
+- [x] PatientRepository, HospitalRepository, VisitRepository
 
 
 ### 환자 등록 작업
