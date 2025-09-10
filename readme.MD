@@ -2,7 +2,7 @@
 
 
 ## 병원과 환자 프로젝트
-- 병원과 환자의 방문 이력을 관리하는 시스템
+- 병원과 환자 관리 및 환자의 병원 방문 이력 관리 시스템
 
 
 ### 프로젝트 세팅하기
@@ -21,43 +21,70 @@
 
 
 ### Entity 작업
-- [x] Hospital, Patient, Visit (연관관계 매핑하기, 데이터베이스 확인)
+- [x] Patient, Hospital, Visit (연관관계 매핑하기, 데이터베이스 확인)
 - [] CodeGroup, Codes (연관관계 매핑하기, 데이터베이스 확인)
 
 
 ### Repository 작업
-- [] PatientRepository, VisitRepository
+- [] PatientRepository, HospitalRepository, VisitRepository
+
+
+### 환자 등록 작업
+- [] PatientCreateRequestDto 구현
+- [] PatientResponseDto 구현
+- [] PatientService.createPatient() 메서드 구현
+- [] PatientController.createPatient() 메서드 구현
+- [] 테스트 코트 작성 및 http 파일로 테스트
+
+
+### 환자 수정 작업
+- [] PatientUpdateRequestDto 구현
+- [] PatientResponseDto 구현
+- [] PatientEntity.update() 메서드 구현
+- [] PatientService.updatePatient() 메서드 구현
+- [] PatientController.updatePatient() 메서드 구현
+- [] 테스트 코트 작성 및 http 파일로 테스트
+
+
+### 환자 삭제 작업
+- [] PatientService.deletePatient() 메서드 구현
+- [] PatientController.deletePatient() 메서드 구현
+- [] 테스트 코트 및 http 파일로 테스트
+
+
+### 환자 조회 작업
+- [] PatientResponseDto 구현
+- [] PatientService.getPatientDetail() 메서드 구현
+- [] PatientController.getPatientDetail() 메서드 구현
+- [] 테스트 코트 작성 및 http 파일로 테스트
+
+
+### 환자 목록 조회 작업
 - [] PatientRepository QueryDsl, queryDslConfig
+- [] PatientSearchRequestDto 구현
+- [] PatientPageResponseDto 구현
+- [] PatientService.getPatientWithPage() 메서드 구현
+- [] PatientController.getPatientWithPage() 메서드 구현
+- [] 테스트 코트 작성 및 http 파일로 테스트
 
 
-### Service 작업
-- [] PatientService
-- [] VisitService
+### 병원, 방문 등록 작업
+- [] HospitalService, DTO 병원 등록 작업
+- [] VisitService, DTO 환자 등록 작업
 
 
-### DTO 작업
-- [] Request (Validation 작업 포함)
-  - [] PatientCreateRequestDto
-  - [] PatientUpdateRequestDto
-  - [] PatientSearchRequestDto
-  - [] VisitCreateRequestDto
-  - [] VisitUpdateRequestDto
-  - [] RestControllerAdvice
-- [] Response
-  - [] PatientResponseDto
-  - [] PatientPageResponseDto
-  - [] VisitResponseDto
+### 테스트 데이터 작업 및 API 작동 확인 작업
+- [] 코드그룹, 코드는 data.sql로 insert 작업
+- [] 병원, 환자, 환자방문 테스트 데이터 dateInitializer 작업
+- [] PatientControllerTest.http로 API 확인 작업
+  - [] 등록 확인 작업
+  - [] 수정 확인 작업
+  - [] 삭제 확인 작업
+  - [] 상세 조회 확인 작업
+  - [] 목록 조회 확인 작업 - 페이지네이션 
+  - [] 목록 조회 확인 작업 - 환자이름 검색
+  - [] 목록 조회 확인 작업 - 환자등록번호 검색
+  - [] 목록 조회 확인 작업 - 생년월일 검색
 
 
-### Controller Request, Response 작업
-- [] VisitController, PatientController
-
-
-### 테스트 코드 작성
-- [] 테스트를 위한 데이터 insert
-- [] PatientRequestDtoTest
-- [] PatientServiceTest
-- [] PatientControllerTest (.http 파일로 대체)
-
-
-### 리팩토링 작업
+### common 및 리팩토링
