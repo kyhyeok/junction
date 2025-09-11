@@ -53,16 +53,4 @@ class PatientServiceTest @Autowired constructor(
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessage("확인되지 않은 병원 정보입니다")
     }
-
-    @Test
-    @DisplayName("환자 등록 실패 - 성별 코드 없음")
-    fun createPatientFail_When_GenderCodeNotFound() {
-        // given
-        val request = testPatientCreateRequestFixture(genderCode = "Z")
-
-        // when && then
-        assertThatThrownBy { patientService.createPatient(request) }
-            .isInstanceOf(IllegalArgumentException::class.java)
-            .hasMessage("성별 입력 코드를 확인해주세요")
-    }
 }

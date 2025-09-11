@@ -4,11 +4,11 @@ Content-Type: application/json
 
 {
   "hospitalId": 1,
-  "patientName": "김환자",
-  "patientRegistrationNumber": "1234-5678",
+  "patientName": "김환자입니다",
+  "patientRegistrationNumber": "9988776655442",
   "genderCode": "F",
-  "birthDay": "1990-05-15",
-  "phoneNumber": "010-1111-1111"
+  "birthDay": "1990-05-31",
+  "phoneNumber": "010-1111-2222"
 }
 
 ### 환자 수정
