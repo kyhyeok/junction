@@ -42,7 +42,7 @@
 - [x] PatientController.createPatient() 메서드 구현
 - [x] PatientResponseDto, HospitalResponseDto 구현
 - [x] 테스트 코트 작성 (성별 코드 오류, 병원 오류, 환자 저장)
-- [] 리팩토링
+- [x] 리팩토링 (Service, Entity, TestFixture)
 - [] PatientCreateRequestDto validations 구현
 - [] 환자등록번호 중복 처리 작업
 - [] 테스트 코트 작성 (request validation, 환자등록번호 종북), http 파일로 테스트

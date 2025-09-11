@@ -1,6 +1,7 @@
 package hd.junction.patient.domain
 
 import hd.junction.hospital.domain.Hospital
+import hd.junction.patient.dto.request.PatientCreateRequestDto
 import hd.junction.visit.domain.Visit
 import jakarta.persistence.*
 import jakarta.persistence.CascadeType.ALL
@@ -37,5 +38,19 @@ class Patient(
     @GeneratedValue(strategy = IDENTITY)
     val id: Long? = null,
 ) {
-
+    companion object {
+        fun create(
+            patientCreateRequestDto: PatientCreateRequestDto,
+            hospital: Hospital,
+        ): Patient {
+            return Patient(
+                patientCreateRequestDto.patientName,
+                patientCreateRequestDto.patientRegistrationNumber,
+                patientCreateRequestDto.genderCode,
+                patientCreateRequestDto.birthDay,
+                patientCreateRequestDto.phoneNumber,
+                hospital
+            )
+        }
+    }
 }

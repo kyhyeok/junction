@@ -1,6 +1,6 @@
 package hd.junction.patient.service
 
-import hd.junction.patient.dto.request.PatientCreateRequestDto
+import hd.junction.patient.fixture.PatientFixture.testPatientCreateRequestFixture
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
@@ -8,7 +8,6 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
-import java.time.LocalDate
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -20,19 +19,10 @@ class PatientServiceTest @Autowired constructor(
     @DisplayName("환자 등록 성공")
     fun createPatientSuccess() {
         // given
-        val request = PatientCreateRequestDto(
-            patientName = "김환자",
-            patientRegistrationNumber = "1234-5678",
-            genderCode = "F",
-            birthDay = LocalDate.of(1992, 5, 16),
-            phoneNumber = "010-1111-1111",
-            hospital = 1L
-        )
-
+        val request = testPatientCreateRequestFixture()
 
         // when
         val savedPatient = patientService.createPatient(request)
-
 
         // then
         with(savedPatient) {
@@ -56,15 +46,7 @@ class PatientServiceTest @Autowired constructor(
     @DisplayName("환자 등록 실패 - 병원 없음")
     fun createPatientFail_When_HospitalNotFound() {
         // given
-        val request = PatientCreateRequestDto(
-            patientName = "김환자",
-            patientRegistrationNumber = "1234-5678",
-            genderCode = "F",
-            birthDay = LocalDate.of(1992, 5, 16),
-            phoneNumber = "010-1111-1111",
-            hospital = 2L
-        )
-
+        val request = testPatientCreateRequestFixture(hospitalId = 1_000_000_000L)
 
         // when && then
         assertThatThrownBy { patientService.createPatient(request) }
@@ -76,15 +58,7 @@ class PatientServiceTest @Autowired constructor(
     @DisplayName("환자 등록 실패 - 성별 코드 없음")
     fun createPatientFail_When_GenderCodeNotFound() {
         // given
-        val request = PatientCreateRequestDto(
-            patientName = "김환자",
-            patientRegistrationNumber = "1234-5678",
-            genderCode = "Z",
-            birthDay = LocalDate.of(1992, 5, 16),
-            phoneNumber = "010-1111-1111",
-            hospital = 2L
-        )
-
+        val request = testPatientCreateRequestFixture(genderCode = "Z")
 
         // when && then
         assertThatThrownBy { patientService.createPatient(request) }
