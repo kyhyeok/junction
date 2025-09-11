@@ -11,7 +11,7 @@ data class PatientCreateRequestDto(
     val phoneNumber: String?,
 ) {
     init {
-        require(hospitalId > 0) { "병원 ID는 0보다 커야 합니다." }
+        require(hospitalId > 0) { "병원 ID는 0보다 커야 합니다" }
         require(patientName.isNotBlank()) { "환자 이름은 필수 입력 값입니다" }
         require(patientName.length <= 45) { "환자 이름은 최대 45자까지 입력 가능합니다" }
         require(patientRegistrationNumber.isNotBlank()) { "환자 등록 번호는 필수 입력 값입니다" }
@@ -21,8 +21,8 @@ data class PatientCreateRequestDto(
             require(birth.isBefore(LocalDate.now())) { "생년월일은 과거 날짜만 가능합니다" }
         }
         phoneNumber?.let { phone ->
-            require(phone.length <= 20) { "전화번호는 최대 20자까지 입력 가능합니다" }
-            require(isValidPhoneNumber(phone)) { "전화번호 형식이 올바르지 않습니다. 예: 010-1234-5678" }
+            require(phone.length <= 20) { "휴대폰 번호는 최대 20자까지 입력 가능합니다" }
+            require(isValidPhoneNumber(phone)) { "휴대폰 번호 형식이 올바르지 않습니다. 예: 010-1234-5678 or 01012345678" }
         }
     }
 

@@ -45,7 +45,7 @@
 - [x] 리팩토링 (Service, Entity, TestFixture)
 - [x] PatientCreateRequestDto 검증 require 구현
 - [x] 환자등록번호 중복 처리 작업
-- [] 테스트 코트 작성 (request validation, 환자등록번호 종북)
+- [x] 테스트 코트 작성 (request validation, 환자등록번호 종북)
 - [] 리팩토링
 
 

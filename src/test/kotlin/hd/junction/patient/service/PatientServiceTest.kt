@@ -17,7 +17,7 @@ class PatientServiceTest @Autowired constructor(
 ) {
     @Test
     @DisplayName("환자 등록 성공")
-    fun createPatientSuccess() {
+    fun createPatient_When_AllConditionsAreMet() {
         // given
         val request = testPatientCreateRequestFixture()
 
@@ -44,7 +44,7 @@ class PatientServiceTest @Autowired constructor(
 
     @Test
     @DisplayName("환자 등록 실패 - 병원 없음")
-    fun createPatientFail_When_HospitalNotFound() {
+    fun createPatient_When_HospitalNotFound() {
         // given
         val request = testPatientCreateRequestFixture(hospitalId = 1_000_000_000L)
 
@@ -52,5 +52,20 @@ class PatientServiceTest @Autowired constructor(
         assertThatThrownBy { patientService.createPatient(request) }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessage("확인되지 않은 병원 정보입니다")
+    }
+
+
+    @Test
+    @DisplayName("환자 등록 실패 - 같은 병원에서의 환자 등록 번호 중복")
+    fun createPatient_When_PatientINHospital() {
+        // given
+        val request = testPatientCreateRequestFixture()
+
+        val savedPatient = patientService.createPatient(request)
+
+        // when && then
+        assertThatThrownBy { patientService.createPatient(request) }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessage("${savedPatient.hospital.hospitalName}에 이미 등록된 환자입니다")
     }
 }
