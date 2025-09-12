@@ -40,15 +40,15 @@ class Patient(
 ) {
     companion object {
         fun create(
-            patientCreateRequestDto: PatientRequestDto,
+            patientRequestDto: PatientRequestDto,
             hospital: Hospital,
         ): Patient {
             return Patient(
-                patientCreateRequestDto.patientName,
-                patientCreateRequestDto.patientRegistrationNumber,
-                patientCreateRequestDto.genderCode,
-                patientCreateRequestDto.birthDay,
-                patientCreateRequestDto.phoneNumber,
+                patientRequestDto.patientName,
+                patientRequestDto.patientRegistrationNumber,
+                patientRequestDto.genderCode,
+                patientRequestDto.birthDay,
+                patientRequestDto.phoneNumber,
                 hospital
             )
         }

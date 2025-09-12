@@ -11,7 +11,7 @@ import org.junit.jupiter.params.provider.ValueSource
 import java.time.LocalDate
 
 @TestInstance(TestInstance.Lifecycle.PER_CLASS)
-class PatientCreateRequestDtoTest {
+class PatientRequestDtoTest {
     private lateinit var factory: ValidatorFactory
     private lateinit var validator: Validator
 
@@ -27,8 +27,8 @@ class PatientCreateRequestDtoTest {
     }
 
     @Test
-    @DisplayName("PatientCreateRequestDto - 유효한 값으로 PatientCreateRequestDto 생성")
-    fun patientCreateRequestDto_When_AllFieldsAreValid() {
+    @DisplayName("PatientRequestDto - 유효한 값으로 PatientRequestDto 생성")
+    fun patientRequestDto_When_AllFieldsAreValid() {
         // given
         val request = testPatientCreateRequestFixture()
 
@@ -49,8 +49,8 @@ class PatientCreateRequestDtoTest {
     }
 
     @Test
-    @DisplayName("PatientCreateRequestDto - 병원 ID는 0보다 커야 합니다")
-    fun patientCreateRequestDto_When_HospitalIdIsNegative() {
+    @DisplayName("PatientRequestDto - 병원 ID는 0보다 커야 합니다")
+    fun patientRequestDto_When_HospitalIdIsNegative() {
         // given & when & then
         val exception = assertThrows<IllegalArgumentException> {
             testPatientCreateRequestFixture(hospitalId = -1)
@@ -60,8 +60,8 @@ class PatientCreateRequestDtoTest {
     }
 
     @Test
-    @DisplayName("PatientCreateRequestDto - 환자 이름은 필수 입력 값입니다")
-    fun patientCreateRequestDto_When_PatientNameIsBlank() {
+    @DisplayName("PatientRequestDto - 환자 이름은 필수 입력 값입니다")
+    fun patientRequestDto_When_PatientNameIsBlank() {
         // given & when & then
         val exception = assertThrows<IllegalArgumentException> {
             testPatientCreateRequestFixture(patientName = "")
@@ -71,8 +71,8 @@ class PatientCreateRequestDtoTest {
     }
 
     @Test
-    @DisplayName("PatientCreateRequestDto - 환자 이름은 최대 45자까지 입력 가능합니다")
-    fun patientCreateRequestDto_When_PatientNameIsTooLong() {
+    @DisplayName("PatientRequestDto - 환자 이름은 최대 45자까지 입력 가능합니다")
+    fun patientRequestDto_When_PatientNameIsTooLong() {
         // given & when & then
         val exception = assertThrows<IllegalArgumentException> {
             testPatientCreateRequestFixture(patientName = "x".repeat(46))
@@ -82,8 +82,8 @@ class PatientCreateRequestDtoTest {
     }
 
     @Test
-    @DisplayName("PatientCreateRequestDto - 환자 등록 번호는 필수 입력 값입니다")
-    fun patientCreateRequestDto_When_RegistrationNumberIsBlank() {
+    @DisplayName("PatientRequestDto - 환자 등록 번호는 필수 입력 값입니다")
+    fun patientRequestDto_When_RegistrationNumberIsBlank() {
         // given & when & then
         val exception = assertThrows<IllegalArgumentException> {
             testPatientCreateRequestFixture(patientRegistrationNumber = "")
@@ -93,8 +93,8 @@ class PatientCreateRequestDtoTest {
     }
 
     @Test
-    @DisplayName("PatientCreateRequestDto - 환자 등록 번호는 최대 13자까지 입력 가능합니다")
-    fun patientCreateRequestDto_When_RegistrationNumberIsTooLong() {
+    @DisplayName("PatientRequestDto - 환자 등록 번호는 최대 13자까지 입력 가능합니다")
+    fun patientRequestDto_When_RegistrationNumberIsTooLong() {
         // given & when & then
         val exception = assertThrows<IllegalArgumentException> {
             testPatientCreateRequestFixture(patientRegistrationNumber = "x".repeat(14))
@@ -104,8 +104,8 @@ class PatientCreateRequestDtoTest {
     }
 
     @Test
-    @DisplayName("PatientCreateRequestDto - 성별 코드는 M(남성) 또는 F(여성)만 입력 가능합니다")
-    fun patientCreateRequestDto_When_GenderCodeIsInvalid() {
+    @DisplayName("PatientRequestDto - 성별 코드는 M(남성) 또는 F(여성)만 입력 가능합니다")
+    fun patientRequestDto_When_GenderCodeIsInvalid() {
         // given & when & then
         val exception = assertThrows<IllegalArgumentException> {
             testPatientCreateRequestFixture(genderCode = "Z")
@@ -115,8 +115,8 @@ class PatientCreateRequestDtoTest {
     }
 
     @Test
-    @DisplayName("PatientCreateRequestDto - 생년월일은 과거 날짜만 가능합니다")
-    fun patientCreateRequestDto_When_BirthDayIsFuture() {
+    @DisplayName("PatientRequestDto - 생년월일은 과거 날짜만 가능합니다")
+    fun patientRequestDto_When_BirthDayIsFuture() {
         // given & when & then
         val exception = assertThrows<IllegalArgumentException> {
             testPatientCreateRequestFixture(birthDay = LocalDate.now().plusDays(1))
@@ -126,8 +126,8 @@ class PatientCreateRequestDtoTest {
     }
 
     @Test
-    @DisplayName("PatientCreateRequestDto - 휴대폰 번호는 최대 20자까지 입력 가능합니다")
-    fun patientCreateRequestDto_When_PhoneNumberIsTooLong() {
+    @DisplayName("PatientRequestDto - 휴대폰 번호는 최대 20자까지 입력 가능합니다")
+    fun patientRequestDto_When_PhoneNumberIsTooLong() {
         // given & when & then
         val exception = assertThrows<IllegalArgumentException> {
             testPatientCreateRequestFixture(phoneNumber = "010-1234-5678-1111-2222")
@@ -137,7 +137,7 @@ class PatientCreateRequestDtoTest {
     }
 
     @ParameterizedTest
-    @DisplayName("PatientCreateRequestDto - 휴대폰 번호 형식이 올바르지 않습니다")
+    @DisplayName("PatientRequestDto - 휴대폰 번호 형식이 올바르지 않습니다")
     @ValueSource(
         strings = [
             "010-123-5678",        // 중간자리 3자리
@@ -159,7 +159,7 @@ class PatientCreateRequestDtoTest {
             "010",                 // 너무 짧음
         ]
     )
-    fun patientCreateRequestDto_When_PhoneNumberFormatIsInvalid(
+    fun patientRequestDto_When_PhoneNumberFormatIsInvalid(
         invalidPhoneNumber: String
     ) {
         // given & when & then

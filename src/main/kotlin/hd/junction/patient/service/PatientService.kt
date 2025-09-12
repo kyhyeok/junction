@@ -20,28 +20,28 @@ class PatientService(
 ) {
 
     @Transactional
-    fun createPatient(patientCreateRequestDto: PatientRequestDto): PatientResponseDto {
-        //  PatientCreateRequestDto에서 검증하지만, 혹시 모를 잘못된 코드값이 들어올 경우를 대비
-        codeRepository.findByIdCodeGroupAndIdCode(CODE_GROUP_GENDER, patientCreateRequestDto.genderCode)
+    fun createPatient(patientRequestDto: PatientRequestDto): PatientResponseDto {
+        //  PatientRequestDto에서 검증하지만, 혹시 모를 잘못된 코드값이 들어올 경우를 대비
+        codeRepository.findByIdCodeGroupAndIdCode(CODE_GROUP_GENDER, patientRequestDto.genderCode)
             ?: throw IllegalArgumentException("${CODE_GROUP_GENDER}를 확인해주세요")
 
-        val hospital = hospitalRepository.findById(patientCreateRequestDto.hospitalId)
+        val hospital = hospitalRepository.findById(patientRequestDto.hospitalId)
             .orElseThrow { IllegalArgumentException("확인되지 않은 병원 정보입니다") }
 
-        validatedPatientInHospital(hospital, patientCreateRequestDto)
+        validatedPatientInHospital(hospital, patientRequestDto)
 
-        return Patient.create(patientCreateRequestDto, hospital)
+        return Patient.create(patientRequestDto, hospital)
             .let { patient -> patientRepository.save(patient) }
             .let { patient -> PatientResponseDto.of(patient) }
     }
 
     private fun validatedPatientInHospital(
         hospital: Hospital,
-        patientCreateRequestDto: PatientRequestDto
+        patientRequestDto: PatientRequestDto
     ) {
         require(
             !patientRepository.existsByHospitalAndPatientRegistrationNumber(
-                hospital, patientCreateRequestDto.patientRegistrationNumber
+                hospital, patientRequestDto.patientRegistrationNumber
             )
         ) { throw IllegalArgumentException("${hospital.hospitalName}에 이미 등록된 환자입니다") }
     }

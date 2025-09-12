@@ -11,8 +11,8 @@ class PatientController(
     private val patientService: PatientService
 ) {
     @PostMapping()
-    fun createPatient(@RequestBody patientCreateRequestDto: PatientRequestDto): PatientResponseDto {
-        return patientService.createPatient(patientCreateRequestDto)
+    fun createPatient(@RequestBody patientRequestDto: PatientRequestDto): PatientResponseDto {
+        return patientService.createPatient(patientRequestDto)
     }
 
     @PatchMapping()
