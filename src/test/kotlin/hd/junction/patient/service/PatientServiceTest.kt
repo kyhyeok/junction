@@ -1,6 +1,7 @@
 package hd.junction.patient.service
 
 import hd.junction.patient.fixture.PatientFixture.testPatientCreateRequestFixture
+import hd.junction.patient.infrastructure.PatientRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
 import org.junit.jupiter.api.DisplayName
@@ -8,14 +9,17 @@ import org.junit.jupiter.api.Test
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
+import org.springframework.transaction.annotation.Transactional
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
 @ActiveProfiles(value = ["test"])
 class PatientServiceTest @Autowired constructor(
-    private val patientService: PatientService
+    private val patientService: PatientService,
+    private val patientRepository: PatientRepository
 ) {
     @Test
+    @Transactional
     @DisplayName("환자 등록 성공")
     fun createPatient_When_AllConditionsAreMet() {
         // given
@@ -40,6 +44,8 @@ class PatientServiceTest @Autowired constructor(
                 assertThat(hospitalDirector).isEqualTo(savedPatient.hospital.hospitalDirector)
             }
         }
+
+        patientRepository.deleteById(savedPatient.id)
     }
 
     @Test
@@ -56,6 +62,7 @@ class PatientServiceTest @Autowired constructor(
 
 
     @Test
+    @Transactional
     @DisplayName("환자 등록 실패 - 같은 병원에서의 환자 등록 번호 중복")
     fun createPatient_When_PatientINHospital() {
         // given
@@ -67,5 +74,7 @@ class PatientServiceTest @Autowired constructor(
         assertThatThrownBy { patientService.createPatient(request) }
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessage("${savedPatient.hospital.hospitalName}에 이미 등록된 환자입니다")
+
+        patientRepository.deleteById(savedPatient.id)
     }
 }

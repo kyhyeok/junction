@@ -41,12 +41,12 @@
 - [x] PatientService.createPatient() 메서드 구현
 - [x] PatientController.createPatient() 메서드 구현
 - [x] PatientResponseDto, HospitalResponseDto 구현
-- [x] 테스트 코트 작성 (성별 코드 오류, 병원 오류, 환자 저장)
+- [x] 테스트 코드 작성 (성별 코드 오류, 병원 오류, 환자 저장)
 - [x] 리팩토링 (Service, Entity, TestFixture)
 - [x] PatientCreateRequestDto 검증 require 구현
 - [x] 환자등록번호 중복 처리 작업
-- [x] 테스트 코트 작성 (request validation, 환자등록번호 종북)
-- [] 리팩토링
+- [x] 테스트 코드 작성 (request validation, 환자등록번호 종북)
+- [x] 테스트 데이터 클리닝 작업
 
 
 ### 환자 수정 작업
@@ -54,20 +54,20 @@
 - [] PatientEntity.update() 메서드 구현
 - [] PatientService.updatePatient() 메서드 구현
 - [] PatientController.updatePatient() 메서드 구현
-- [] 테스트 코트 작성 및 http 파일로 테스트
+- [] 테스트 코드 작성 및 http 파일로 테스트
 
 
 ### 환자 삭제 작업
 - [] PatientService.deletePatient() 메서드 구현
 - [] PatientController.deletePatient() 메서드 구현
-- [] 테스트 코트 및 http 파일로 테스트
+- [] 테스트 코드 및 http 파일로 테스트
 
 
 ### 환자 조회 작업
 - [] PatientResponseDto 구현
 - [] PatientService.getPatientDetail() 메서드 구현
 - [] PatientController.getPatientDetail() 메서드 구현
-- [] 테스트 코트 작성 및 http 파일로 테스트
+- [] 테스트 코드 작성 및 http 파일로 테스트
 
 
 ### 환자 목록 조회 작업
@@ -76,7 +76,7 @@
 - [] PatientPageResponseDto 구현
 - [] PatientService.getPatientWithPage() 메서드 구현
 - [] PatientController.getPatientWithPage() 메서드 구현
-- [] 테스트 코트 작성 및 http 파일로 테스트
+- [] 테스트 코드 작성 및 http 파일로 테스트
 
 
 ### 병원, 방문 등록 작업
