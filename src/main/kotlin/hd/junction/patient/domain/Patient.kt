@@ -53,4 +53,19 @@ class Patient(
             )
         }
     }
+
+    fun update(
+        patientRequestDto: PatientRequestDto,
+        hospital: Hospital,
+    ): Patient {
+        return Patient(
+            patientName = patientRequestDto.patientName,
+            patientRegistrationNumber = patientRequestDto.patientRegistrationNumber,
+            genderCode = patientRequestDto.genderCode,
+            birthDay = patientRequestDto.birthDay,
+            phoneNumber = patientRequestDto.phoneNumber,
+            hospital = hospital,
+            id = this.id
+        )
+    }
 }

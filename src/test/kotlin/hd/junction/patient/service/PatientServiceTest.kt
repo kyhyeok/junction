@@ -18,6 +18,7 @@ class PatientServiceTest @Autowired constructor(
     private val patientService: PatientService,
     private val patientRepository: PatientRepository
 ) {
+
     @Test
     @Transactional
     @DisplayName("환자 등록 성공")
@@ -38,7 +39,7 @@ class PatientServiceTest @Autowired constructor(
             assertThat(phoneNumber).isEqualTo(savedPatient.phoneNumber)
 
             with(hospital) {
-                assertThat(id).isNotNull
+                assertThat(id).isEqualTo(savedPatient.hospital.id)
                 assertThat(hospitalName).isEqualTo(savedPatient.hospital.hospitalName)
                 assertThat(nursingInstitutionNumber).isEqualTo(savedPatient.hospital.nursingInstitutionNumber)
                 assertThat(hospitalDirector).isEqualTo(savedPatient.hospital.hospitalDirector)
@@ -76,5 +77,43 @@ class PatientServiceTest @Autowired constructor(
             .hasMessage("${savedPatient.hospital.hospitalName}에 이미 등록된 환자입니다")
 
         patientRepository.deleteById(savedPatient.id)
+    }
+
+    @Test
+    @Transactional
+    @DisplayName("환자 수정 성공")
+    fun updatePatient_When_AllConditionsAreMet() {
+        // given
+        val createRequest = testPatientCreateRequestFixture()
+        val savedPatient = patientService.createPatient(createRequest)
+
+        val updateRequest = testPatientCreateRequestFixture(
+            hospitalId = 2,
+            patientName = "이환자 수정",
+            phoneNumber = "010-2222-2222"
+        )
+
+
+        // when
+        val updatedPatient = patientService.updatePatient(savedPatient.id, updateRequest)
+
+        // then
+        with(updatedPatient) {
+            assertThat(id).isNotNull
+            assertThat(patientName).isEqualTo(updatedPatient.patientName)
+            assertThat(patientRegistrationNumber).isEqualTo(updatedPatient.patientRegistrationNumber)
+            assertThat(genderCode).isEqualTo(updatedPatient.genderCode)
+            assertThat(birthDay).isEqualTo(updatedPatient.birthDay)
+            assertThat(phoneNumber).isEqualTo(updatedPatient.phoneNumber)
+
+            with(hospital) {
+                assertThat(id).isEqualTo(updatedPatient.hospital.id)
+                assertThat(hospitalName).isEqualTo(updatedPatient.hospital.hospitalName)
+                assertThat(nursingInstitutionNumber).isEqualTo(updatedPatient.hospital.nursingInstitutionNumber)
+                assertThat(hospitalDirector).isEqualTo(updatedPatient.hospital.hospitalDirector)
+            }
+        }
+
+        patientRepository.deleteById(updatedPatient.id)
     }
 }

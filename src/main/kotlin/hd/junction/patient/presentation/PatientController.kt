@@ -15,9 +15,12 @@ class PatientController(
         return patientService.createPatient(patientRequestDto)
     }
 
-    @PatchMapping()
-    fun updatePatient(): String {
-        return "Patient Updated"
+    @PatchMapping("/{id}")
+    fun updatePatient(
+        @PathVariable("id", required = true) id: Long,
+        @RequestBody patientRequestDto: PatientRequestDto
+    ): PatientResponseDto {
+        return patientService.updatePatient(id, patientRequestDto)
     }
 
     @DeleteMapping()

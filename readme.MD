@@ -53,10 +53,11 @@
 - [x] PatientRequestDto
   - 기획서 확인 이후 환자 등록과 동일한 데이터 형태를 받아서 수정으로 이해. PatientCreateRequestDto를 그대로 받아서 사용
   - PatientCreateRequestDto를 PatientRequestDto로 클래스명 변경. 등록과 수정에 공통 사용
-- [] PatientEntity.update() 메서드 구현
-- [] PatientService.updatePatient() 메서드 구현
-- [] PatientController.updatePatient() 메서드 구현
-- [] 테스트 코드 작성 및 http 파일로 테스트
+- [x] PatientEntity.update() 메서드 구현
+- [x] PatientService.updatePatient() 메서드 구현
+- [x] PatientController.updatePatient() 메서드 구현
+- [x] 테스트 코드 작성 및 http 파일로 테스트
+- [x] 리팩토링(성별코드 검증 함수화 작업)
 
 
 ### 환자 삭제 작업

@@ -14,12 +14,20 @@ class DateInitializer(
 
     @Transactional
     override fun run(args: ApplicationArguments?) {
-        val hospital = Hospital(
+        val hospital1 = Hospital(
             hospitalName = "One Hospital",
-            nursingInstitutionNumber = "abcd-qwer",
+            nursingInstitutionNumber = "first-hospital",
             hospitalDirector = "원병원 병원장"
         )
 
-        hospitalRepository.save(hospital)
+        hospitalRepository.save(hospital1)
+
+        val hospital2 = Hospital(
+            hospitalName = "이건 두번쨰 Hospital",
+            nursingInstitutionNumber = "second-hospital",
+            hospitalDirector = "두번째 병원장"
+        )
+
+        hospitalRepository.save(hospital2)
     }
 }
