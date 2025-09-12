@@ -61,9 +61,9 @@
 
 
 ### 환자 삭제 작업
-- [] PatientService.deletePatient() 메서드 구현
-- [] PatientController.deletePatient() 메서드 구현
-- [] 테스트 코드 및 http 파일로 테스트
+- [x] PatientService.deletePatient() 메서드 구현
+- [x] PatientController.deletePatient() 메서드 구현
+- [x] 테스트 코드 및 http 파일로 테스트
 
 
 ### 환자 조회 작업

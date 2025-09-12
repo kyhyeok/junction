@@ -23,9 +23,9 @@ class PatientController(
         return patientService.updatePatient(id, patientRequestDto)
     }
 
-    @DeleteMapping()
-    fun deletePatient(): String {
-        return "Patient Deleted"
+    @DeleteMapping("/{id}")
+    fun deletePatient(@PathVariable("id", required = true) id: Long) {
+        patientService.deletePatient(id)
     }
 
     @GetMapping("/{id}")

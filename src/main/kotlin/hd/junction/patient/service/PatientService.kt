@@ -50,6 +50,14 @@ class PatientService(
             .let { patient -> PatientResponseDto.of(patient) }
     }
 
+    @Transactional
+    fun deletePatient(id: Long) {
+        val foundPatient = patientRepository.findById(id)
+            .orElseThrow { IllegalArgumentException("확인되지 않은 환자입니다") }
+
+        patientRepository.delete(foundPatient)
+    }
+
 
     //  PatientRequestDto에서 검증하지만, 혹시 모를 잘못된 코드값이 들어올 경우를 대비
     private fun validatedGenderCode(patientRequestDto: PatientRequestDto) {

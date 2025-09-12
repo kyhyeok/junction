@@ -128,4 +128,19 @@ class PatientServiceTest @Autowired constructor(
             .isInstanceOf(IllegalArgumentException::class.java)
             .hasMessage("확인되지 않은 환자입니다")
     }
+
+    @Test
+    @DisplayName("환자 삭제 성공")
+    fun deletePatient() {
+        // given
+        val request = testPatientCreateRequestFixture()
+        val savedPatient = patientService.createPatient(request)
+        assertThat(savedPatient).isNotNull()
+
+        // when
+        patientService.deletePatient(savedPatient.id)
+
+        // then
+        assertThat(patientRepository.existsById(savedPatient.id)).isFalse()
+    }
 }
