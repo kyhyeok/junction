@@ -1,6 +1,6 @@
 package hd.junction.patient.presentation
 
-import hd.junction.patient.dto.request.PatientCreateRequestDto
+import hd.junction.patient.dto.request.PatientRequestDto
 import hd.junction.patient.dto.response.PatientResponseDto
 import hd.junction.patient.service.PatientService
 import org.springframework.web.bind.annotation.*
@@ -11,7 +11,7 @@ class PatientController(
     private val patientService: PatientService
 ) {
     @PostMapping()
-    fun createPatient(@RequestBody patientCreateRequestDto: PatientCreateRequestDto): PatientResponseDto {
+    fun createPatient(@RequestBody patientCreateRequestDto: PatientRequestDto): PatientResponseDto {
         return patientService.createPatient(patientCreateRequestDto)
     }
 

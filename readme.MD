@@ -37,7 +37,7 @@
 
 
 ### 환자 등록 작업
-- [x] PatientCreateRequestDto 구현
+- [x] PatientRequestDto 구현
 - [x] PatientService.createPatient() 메서드 구현
 - [x] PatientController.createPatient() 메서드 구현
 - [x] PatientResponseDto, HospitalResponseDto 구현
@@ -50,7 +50,9 @@
 
 
 ### 환자 수정 작업
-- [] PatientUpdateRequestDto 구현
+- [x] PatientRequestDto
+  - 기획서 확인 이후 환자 등록과 동일한 데이터 형태를 받아서 수정으로 이해. PatientCreateRequestDto를 그대로 받아서 사용
+  - PatientCreateRequestDto를 PatientRequestDto로 클래스명 변경. 등록과 수정에 공통 사용
 - [] PatientEntity.update() 메서드 구현
 - [] PatientService.updatePatient() 메서드 구현
 - [] PatientController.updatePatient() 메서드 구현

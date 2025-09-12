@@ -1,7 +1,7 @@
 package hd.junction.patient.domain
 
 import hd.junction.hospital.domain.Hospital
-import hd.junction.patient.dto.request.PatientCreateRequestDto
+import hd.junction.patient.dto.request.PatientRequestDto
 import hd.junction.visit.domain.Visit
 import jakarta.persistence.*
 import jakarta.persistence.CascadeType.ALL
@@ -40,7 +40,7 @@ class Patient(
 ) {
     companion object {
         fun create(
-            patientCreateRequestDto: PatientCreateRequestDto,
+            patientCreateRequestDto: PatientRequestDto,
             hospital: Hospital,
         ): Patient {
             return Patient(
