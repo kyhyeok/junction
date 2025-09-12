@@ -116,4 +116,16 @@ class PatientServiceTest @Autowired constructor(
 
         patientRepository.deleteById(updatedPatient.id)
     }
+
+    @Test
+    @DisplayName("환자 수정 실패 - 환자 없음")
+    fun updatePatient_When_PatientNotFound() {
+        // given
+        val request = testPatientCreateRequestFixture()
+
+        // when && then
+        assertThatThrownBy { patientService.updatePatient(1_000_000_000L, request) }
+            .isInstanceOf(IllegalArgumentException::class.java)
+            .hasMessage("확인되지 않은 환자입니다")
+    }
 }
