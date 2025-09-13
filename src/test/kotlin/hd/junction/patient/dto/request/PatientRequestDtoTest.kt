@@ -40,7 +40,6 @@ class PatientRequestDtoTest {
         assertThat(violations).isEmpty()
         with(request) {
             assertThat(patientName).isEqualTo("김환자")
-            assertThat(patientRegistrationNumber).isEqualTo("1234567899992")
             assertThat(genderCode).isEqualTo("F")
             assertThat(birthDay).isEqualTo(LocalDate.of(1992, 5, 16))
             assertThat(phoneNumber).isEqualTo("010-1111-1111")
@@ -79,28 +78,6 @@ class PatientRequestDtoTest {
         }
 
         assertThat(exception.message).isEqualTo("환자 이름은 최대 45자까지 입력 가능합니다")
-    }
-
-    @Test
-    @DisplayName("PatientRequestDto - 환자 등록 번호는 필수 입력 값입니다")
-    fun patientRequestDto_When_RegistrationNumberIsBlank() {
-        // given & when & then
-        val exception = assertThrows<IllegalArgumentException> {
-            testPatientCreateRequestFixture(patientRegistrationNumber = "")
-        }
-
-        assertThat(exception.message).isEqualTo("환자 등록 번호는 필수 입력 값입니다")
-    }
-
-    @Test
-    @DisplayName("PatientRequestDto - 환자 등록 번호는 최대 13자까지 입력 가능합니다")
-    fun patientRequestDto_When_RegistrationNumberIsTooLong() {
-        // given & when & then
-        val exception = assertThrows<IllegalArgumentException> {
-            testPatientCreateRequestFixture(patientRegistrationNumber = "x".repeat(14))
-        }
-
-        assertThat(exception.message).isEqualTo("환자 등록 번호는 최대 13자까지 입력 가능합니다")
     }
 
     @Test

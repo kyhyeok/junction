@@ -84,11 +84,19 @@
 - [x] 테스트 코드 작성 및 dateInitializer 환자 등록 번호, 생년월일 고장 값 저장 작업
 - [x] PatientPageResponseDto null 처리 작업
 - [x] 코드 다듬기
-- [] 페이징 작업
-- [] 테스트 코드 작성 및 http 파일로 테스트, 리팩토링
+- [x] 페이징 작업
+- [x] 테스트 코드 작성 및 http 파일로 테스트, 리팩토링
+
+
+### 전체 소스코드 확인 및 추가 / 변경 작업
+- [x] controller 반환값 ResponseEntity으로 변경 작업
+- [x] Patient의 patientRegistrationNumber request에서 받는 것을 내부에서 생성하는 것으로 변경 작업
+- [x] generateRandomPatientRegistrationNumber() 함수 구현
+- [x] validatedPatientInHospital()에서 getUniquePatientRegistrationNumber()로 변경 (중복 체크 X loop로 중복 안되는 새로운 번호 생성)
+
 
 ### 환자 방문 작업
 - [] VisitController, VisitService, DTO 환자방문 등록 작업
 - [] 테스트 코드 작성 및 리팩토링
 
-### 디버깅, 코드 다듬기
+### 디버깅, 전체 코드 다듬기

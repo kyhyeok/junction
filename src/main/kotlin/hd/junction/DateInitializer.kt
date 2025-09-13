@@ -1,5 +1,6 @@
 package hd.junction
 
+import hd.junction.common.util.RandomUtils.generateRandomPatientRegistrationNumber
 import hd.junction.hospital.domain.Hospital
 import hd.junction.hospital.infrastructure.HospitalRepository
 import hd.junction.patient.domain.Patient
@@ -137,19 +138,5 @@ class DateInitializer(
             hospital = hospital,
             patient = patient
         )
-    }
-
-
-    /**
-     * 13자리 숫자를 각 자리마다 1~9 랜덤하게 환자 등록 번호 생성 (예: 1234567890123)
-     * init 데이터 환자 수는 많아도 100내외 예정으로 중복 발생 확률 매우 낮음
-     * 실제 시스템에서 UUID 또는 다른 고유값 생성 로직 사용 또는 중복 체크 필요
-     */
-    private fun generateRandomPatientRegistrationNumber(): String {
-        return buildString {
-            repeat(13) {
-                append(Random.nextInt(0, 10))
-            }
-        }
     }
 }

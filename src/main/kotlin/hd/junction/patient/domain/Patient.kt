@@ -1,5 +1,6 @@
 package hd.junction.patient.domain
 
+import hd.junction.common.util.RandomUtils.generateRandomPatientRegistrationNumber
 import hd.junction.hospital.domain.Hospital
 import hd.junction.patient.dto.request.PatientRequestDto
 import hd.junction.visit.domain.Visit
@@ -45,10 +46,11 @@ class Patient(
         fun create(
             patientRequestDto: PatientRequestDto,
             hospital: Hospital,
+            patientRegistrationNumber: String
         ): Patient {
             return Patient(
                 patientRequestDto.patientName,
-                patientRequestDto.patientRegistrationNumber,
+                patientRegistrationNumber,
                 patientRequestDto.genderCode,
                 patientRequestDto.birthDay,
                 patientRequestDto.phoneNumber,
@@ -63,7 +65,7 @@ class Patient(
     ): Patient {
         return Patient(
             patientName = patientRequestDto.patientName,
-            patientRegistrationNumber = patientRequestDto.patientRegistrationNumber,
+            patientRegistrationNumber = this.patientRegistrationNumber,
             genderCode = patientRequestDto.genderCode,
             birthDay = patientRequestDto.birthDay,
             phoneNumber = patientRequestDto.phoneNumber,

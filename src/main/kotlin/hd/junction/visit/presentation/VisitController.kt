@@ -1,41 +1,39 @@
 package hd.junction.visit.presentation
 
-import org.springframework.web.bind.annotation.DeleteMapping
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PatchMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestMapping
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.http.HttpStatus
+import org.springframework.http.ResponseEntity
+import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/api/v1/visits")
 class VisitController(
 ) {
     @PostMapping()
-    fun createVisit(): String {
-        return "Visit Created"
+    fun createVisit(
+
+    ): ResponseEntity<String> {
+        return ResponseEntity.status(HttpStatus.CREATED).body("Visit Created")
     }
 
     @PatchMapping()
-    fun updateVisit(): String {
-        return "Visit Updated"
+    fun updateVisit(
+
+    ): ResponseEntity<String> {
+        return ResponseEntity.ok("Visit Updated")
     }
 
     @DeleteMapping()
-    fun deleteVisit(): String {
-        return "Visit Deleted"
+    fun deleteVisit(
+
+    ): ResponseEntity<String> {
+        return ResponseEntity.noContent().build()
     }
 
     @GetMapping("/{id}")
     fun getVisitDetail(
         @PathVariable("id", required = true) id: Long
-    ): String {
-        return "Visit getVisitDetail $id"
-    }
-
-    @GetMapping()
-    fun getVisitWithPage(): String {
-        return "Visit getPatientWithPage"
+    ): ResponseEntity<String> {
+        return ResponseEntity.ok("Visit getVisitDetail $id")
     }
 }
+

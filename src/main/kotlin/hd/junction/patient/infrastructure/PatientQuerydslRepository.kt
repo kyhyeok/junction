@@ -7,6 +7,10 @@ import hd.junction.patient.domain.QPatient.patient
 import hd.junction.patient.dto.request.PatientSearchRequestDto
 import hd.junction.patient.dto.response.PatientPageResponseDto
 import hd.junction.visit.domain.QVisit.visit
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.PageImpl
+import org.springframework.data.domain.Pageable
+import org.springframework.data.support.PageableExecutionUtils
 import org.springframework.stereotype.Component
 
 @Component
@@ -15,9 +19,22 @@ class PatientQuerydslRepository(
 ) {
 
     // 최근 방문 (방문 상태 코드 2) 기준으로 환자 목록 조회 - 방문 상태가 종료일 떄 최근 방문이라 판단
-    fun getPatientWithPage(patientSearchRequestDto: PatientSearchRequestDto): List<PatientPageResponseDto> {
+    fun getPatientWithPage(
+        patientSearchRequestDto: PatientSearchRequestDto,
+        pageable: Pageable
+    ): Page<PatientPageResponseDto> {
         val visitStateCodeEnd = "2"
-        return queryFactory
+
+        val countQuery = queryFactory
+            .select(patient.count())
+            .from(patient)
+            .where(
+                patientSearchRequestDto.patientName?.let { patient.patientName.eq(it) },
+                patientSearchRequestDto.patientRegistrationNumber?.let { patient.patientRegistrationNumber.eq(it) },
+                patientSearchRequestDto.birthDay?.let { patient.birthDay.eq(it) }
+            )
+
+        val query = queryFactory
             .select(
                 Projections.constructor(
                     PatientPageResponseDto::class.java,
@@ -43,6 +60,10 @@ class PatientQuerydslRepository(
                 patientSearchRequestDto.patientRegistrationNumber?.let { patient.patientRegistrationNumber.eq(it) },
                 patientSearchRequestDto.birthDay?.let { patient.birthDay.eq(it) }
             )
-            .fetch()
+            .offset(pageable.offset)
+            .limit(pageable.pageSize.toLong())
+            .orderBy(patient.id.desc())
+
+        return PageableExecutionUtils.getPage(query.fetch(), pageable) { countQuery.fetchOne() ?: 0L }
     }
 }

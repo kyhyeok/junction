@@ -1,6 +1,7 @@
 package hd.junction.patient.service
 
 import hd.junction.codes.infrastructure.CodeRepository
+import hd.junction.common.util.RandomUtils.generateRandomPatientRegistrationNumber
 import hd.junction.hospital.domain.Hospital
 import hd.junction.hospital.infrastructure.HospitalRepository
 import hd.junction.patient.domain.Patient
@@ -11,6 +12,8 @@ import hd.junction.patient.dto.response.PatientResponseDto
 import hd.junction.patient.dto.response.PatientVisitResponseDto
 import hd.junction.patient.infrastructure.PatientQuerydslRepository
 import hd.junction.patient.infrastructure.PatientRepository
+import org.springframework.data.domain.Page
+import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
@@ -23,7 +26,6 @@ class PatientService(
     private val patientRepository: PatientRepository,
     private val patientQuerydslRepository: PatientQuerydslRepository,
 ) {
-
     @Transactional
     fun createPatient(
         patientRequestDto: PatientRequestDto
@@ -33,9 +35,11 @@ class PatientService(
         val hospital = hospitalRepository.findById(patientRequestDto.hospitalId)
             .orElseThrow { IllegalArgumentException("확인되지 않은 병원 정보입니다") }
 
-        validatedPatientInHospital(hospital, patientRequestDto)
+        val patientRegistrationNumber: String = getUniquePatientRegistrationNumber(
+            hospital, generateRandomPatientRegistrationNumber()
+        )
 
-        return Patient.create(patientRequestDto, hospital)
+        return Patient.create(patientRequestDto, hospital, patientRegistrationNumber)
             .let { patient -> patientRepository.save(patient) }
             .let { patient -> PatientResponseDto.of(patient) }
     }
@@ -51,8 +55,6 @@ class PatientService(
 
         val hospital = hospitalRepository.findById(patientRequestDto.hospitalId)
             .orElseThrow { IllegalArgumentException("확인되지 않은 병원 정보입니다") }
-
-        validatedPatientInHospital(hospital, patientRequestDto)
 
         return foundPatient.update(patientRequestDto, hospital)
             .let { patient -> patientRepository.save(patient) }
@@ -81,9 +83,10 @@ class PatientService(
 
     @Transactional(readOnly = true)
     fun getPatientWithPage(
-        patientSearchRequestDto: PatientSearchRequestDto
-    ): List<PatientPageResponseDto> {
-        return patientQuerydslRepository.getPatientWithPage(patientSearchRequestDto)
+        patientSearchRequestDto: PatientSearchRequestDto,
+        pageable: Pageable
+    ): Page<PatientPageResponseDto> {
+        return patientQuerydslRepository.getPatientWithPage(patientSearchRequestDto, pageable)
     }
 
 
@@ -95,14 +98,19 @@ class PatientService(
             ?: throw IllegalArgumentException("${CODE_GROUP_GENDER}를 확인해주세요"))
     }
 
-    private fun validatedPatientInHospital(
+    fun getUniquePatientRegistrationNumber(
         hospital: Hospital,
-        patientRequestDto: PatientRequestDto
-    ) {
-        require(
-            !patientRepository.existsByHospitalAndPatientRegistrationNumber(
-                hospital, patientRequestDto.patientRegistrationNumber
+        initialPatientRegistrationNumber: String
+    ): String {
+        var patientRegistrationNumber = initialPatientRegistrationNumber
+
+        while (patientRepository.existsByHospitalAndPatientRegistrationNumber(
+                hospital, patientRegistrationNumber
             )
-        ) { throw IllegalArgumentException("${hospital.hospitalName}에 이미 등록된 환자입니다") }
+        ) {
+            patientRegistrationNumber = generateRandomPatientRegistrationNumber()
+        }
+
+        return patientRegistrationNumber
     }
 }
