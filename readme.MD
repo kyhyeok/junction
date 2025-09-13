@@ -68,10 +68,11 @@
 
 ### 환자 조회 작업
 - [x] 병원, 환자, 환자방문 테스트 데이터 dateInitializer 작업
-- [] PatientResponseDto 구현
-- [] PatientService.getPatientDetail() 메서드 구현
-- [] PatientController.getPatientDetail() 메서드 구현
-- [] 테스트 코드 작성 및 http 파일로 테스트
+- [x] PatientResponseDto 구현
+- [x] PatientService.getPatientDetail() 메서드 구현
+- [x] PatientController.getPatientDetail() 메서드 구현
+- [x] 테스트 코드 작성 및 http 파일로 테스트
+- [x] dateInitializer 수정 및 리팩토링 작업
 
 
 ### 환자 목록 조회 작업

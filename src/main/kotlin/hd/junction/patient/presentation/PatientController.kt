@@ -2,6 +2,7 @@ package hd.junction.patient.presentation
 
 import hd.junction.patient.dto.request.PatientRequestDto
 import hd.junction.patient.dto.response.PatientResponseDto
+import hd.junction.patient.dto.response.PatientVisitResponseDto
 import hd.junction.patient.service.PatientService
 import org.springframework.web.bind.annotation.*
 
@@ -31,8 +32,8 @@ class PatientController(
     @GetMapping("/{id}")
     fun getPatientDetail(
         @PathVariable("id", required = true) id: Long
-    ): String {
-        return "Patient getPatientDetail $id"
+    ): PatientVisitResponseDto {
+        return patientService.getPatientDetail(id)
     }
 
     @GetMapping()

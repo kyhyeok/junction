@@ -6,6 +6,7 @@ import hd.junction.hospital.infrastructure.HospitalRepository
 import hd.junction.patient.domain.Patient
 import hd.junction.patient.dto.request.PatientRequestDto
 import hd.junction.patient.dto.response.PatientResponseDto
+import hd.junction.patient.dto.response.PatientVisitResponseDto
 import hd.junction.patient.infrastructure.PatientRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -56,6 +57,14 @@ class PatientService(
             .orElseThrow { IllegalArgumentException("확인되지 않은 환자입니다") }
 
         patientRepository.delete(foundPatient)
+    }
+
+    @Transactional(readOnly = true)
+    fun getPatientDetail(id: Long): PatientVisitResponseDto {
+        val foundPatient = patientRepository.findById(id)
+            .orElseThrow { IllegalArgumentException("확인되지 않은 환자입니다") }
+
+        return PatientVisitResponseDto.of(foundPatient, foundPatient.visits)
     }
 
 

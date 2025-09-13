@@ -68,8 +68,14 @@ class DateInitializer(
         val visits = mutableListOf<Visit>()
         val today = LocalDate.now()
 
-        // 각 환자마다 0~10개의 방문 기록 생성
-        allPatients.forEach { patient ->
+        // 첫 번째 환자는 테스트 검증을 위해 직접 데이터 저장
+        val firstVisit1 = createVisit(today.plusDays(-2), "2")
+        visitRepository.save(firstVisit1)
+        val firstVisit2 = createVisit(today.plusDays(0), "1")
+        visitRepository.save(firstVisit2)
+
+        // 첫 번째 환재 제외, 각 환자마다 0~10개의 방문 기록 생성
+        allPatients.drop(1).forEach { patient ->
             if (Random.nextInt(100) < 80) {  // 80% 환자만 방문 기록 (방문 X, 환자 등록만 고려)
                 val visitCount = Random.nextInt(1, 10)
                 repeat(visitCount) {
@@ -98,6 +104,20 @@ class DateInitializer(
                 }
             }
         }
+    }
+
+    private fun createVisit(
+        reservationDate: LocalDate,
+        visitStateCode: String,
+        hospital: Hospital = hospitalRepository.findById(1L).get(),
+        patient: Patient = patientRepository.findById(1L).get(),
+    ): Visit {
+        return Visit(
+            reservationDate = reservationDate,
+            visitStateCode = visitStateCode,
+            hospital = hospital,
+            patient = patient
+        )
     }
 
 

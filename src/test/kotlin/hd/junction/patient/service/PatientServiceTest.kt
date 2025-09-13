@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional
 @ActiveProfiles(value = ["test"])
 class PatientServiceTest @Autowired constructor(
     private val patientService: PatientService,
-    private val patientRepository: PatientRepository
+    private val patientRepository: PatientRepository,
 ) {
 
     @Test
@@ -130,6 +130,7 @@ class PatientServiceTest @Autowired constructor(
     }
 
     @Test
+    @Transactional
     @DisplayName("환자 삭제 성공")
     fun deletePatient() {
         // given
@@ -142,5 +143,59 @@ class PatientServiceTest @Autowired constructor(
 
         // then
         assertThat(patientRepository.existsById(savedPatient.id)).isFalse()
+    }
+
+    @Test
+    @DisplayName("환자 자세히 조회 성공 - 방문 이력 포함")
+    fun getPatientDetail_When_Visited() {
+        val patientDetail = patientService.getPatientDetail(1L)
+
+        with(patientDetail) {
+            assertThat(id).isEqualTo(patientDetail.id)
+            assertThat(patientName).isEqualTo(patientDetail.patientName)
+            assertThat(patientRegistrationNumber).isEqualTo(patientDetail.patientRegistrationNumber)
+            assertThat(genderCode).isEqualTo(patientDetail.genderCode)
+            assertThat(birthDay).isEqualTo(patientDetail.birthDay)
+            assertThat(phoneNumber).isEqualTo(patientDetail.phoneNumber)
+
+            assertThat(patientDetail.visits).isNotEmpty()
+
+            patientDetail.visits.forEach { visit ->
+                with(visit) {
+                    assertThat(id).isEqualTo(visit.id)
+                    assertThat(reservationDate).isEqualTo(visit.reservationDate)
+                    assertThat(visitStateCode).isEqualTo(visit.visitStateCode)
+                    assertThat(visit.hospital).isNotNull
+
+                    with(visit.hospital) {
+                        assertThat(id).isEqualTo(visit.hospital.id)
+                        assertThat(hospitalName).isEqualTo(visit.hospital.hospitalName)
+                        assertThat(nursingInstitutionNumber).isEqualTo(visit.hospital.nursingInstitutionNumber)
+                        assertThat(hospitalDirector).isEqualTo(visit.hospital.hospitalDirector)
+                    }
+                }
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("환자 자세히 조회 성공 - 방문 이력 없음")
+    fun getPatientDetail_When_NotVisited() {
+        val request = testPatientCreateRequestFixture()
+        val savedPatient = patientService.createPatient(request)
+        val patientDetail = patientService.getPatientDetail(savedPatient.id)
+
+        with(patientDetail) {
+            assertThat(id).isEqualTo(patientDetail.id)
+            assertThat(patientName).isEqualTo(patientDetail.patientName)
+            assertThat(patientRegistrationNumber).isEqualTo(patientDetail.patientRegistrationNumber)
+            assertThat(genderCode).isEqualTo(patientDetail.genderCode)
+            assertThat(birthDay).isEqualTo(patientDetail.birthDay)
+            assertThat(phoneNumber).isEqualTo(patientDetail.phoneNumber)
+
+            assertThat(patientDetail.visits).isEmpty()
+        }
+
+        patientService.deletePatient(savedPatient.id)
     }
 }
