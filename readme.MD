@@ -76,7 +76,7 @@
 
 
 ### 환자 목록 조회 작업
-- [] PatientRepository QueryDsl, queryDslConfig
+- [x] QueryDsl gradle 의존성, queryDslConfig, queryDslRepository, Patient Index 구현
 - [] PatientSearchRequestDto 구현
 - [] PatientPageResponseDto 구현
 - [] PatientService.getPatientWithPage() 메서드 구현

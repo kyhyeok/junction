@@ -10,7 +10,10 @@ import jakarta.persistence.GenerationType.IDENTITY
 import java.time.LocalDate
 
 @Entity
-@Table(name = "patient")
+@Table(name = "patient", indexes = [
+    Index(name = "idx_patient_registration_number", columnList = "patientRegistrationNumber"),
+    Index(name = "idx_birthDay", columnList = "birthDay")
+])
 class Patient(
     @Column(length = 45, nullable = false)
     val patientName: String,
