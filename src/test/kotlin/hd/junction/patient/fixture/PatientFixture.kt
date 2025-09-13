@@ -1,6 +1,7 @@
 package hd.junction.patient.fixture
 
 import hd.junction.patient.dto.request.PatientRequestDto
+import hd.junction.patient.dto.request.PatientSearchRequestDto
 import java.time.LocalDate
 
 object PatientFixture {
@@ -19,6 +20,18 @@ object PatientFixture {
             genderCode = genderCode,
             birthDay = birthDay,
             phoneNumber = phoneNumber,
+        )
+    }
+
+    fun testPatientSearchRequestDtoFixture(
+        patientName: String? = null,
+        patientRegistrationNumber: String? = null,
+        birthDay: LocalDate? = null,
+    ): PatientSearchRequestDto {
+        return PatientSearchRequestDto(
+            patientName = patientName,
+            patientRegistrationNumber = patientRegistrationNumber,
+            birthDay = birthDay,
         )
     }
 }

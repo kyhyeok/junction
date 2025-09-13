@@ -1,6 +1,8 @@
 package hd.junction.patient.presentation
 
 import hd.junction.patient.dto.request.PatientRequestDto
+import hd.junction.patient.dto.request.PatientSearchRequestDto
+import hd.junction.patient.dto.response.PatientPageResponseDto
 import hd.junction.patient.dto.response.PatientResponseDto
 import hd.junction.patient.dto.response.PatientVisitResponseDto
 import hd.junction.patient.service.PatientService
@@ -11,8 +13,10 @@ import org.springframework.web.bind.annotation.*
 class PatientController(
     private val patientService: PatientService
 ) {
-    @PostMapping()
-    fun createPatient(@RequestBody patientRequestDto: PatientRequestDto): PatientResponseDto {
+    @PostMapping
+    fun createPatient(
+        @RequestBody patientRequestDto: PatientRequestDto
+    ): PatientResponseDto {
         return patientService.createPatient(patientRequestDto)
     }
 
@@ -25,7 +29,9 @@ class PatientController(
     }
 
     @DeleteMapping("/{id}")
-    fun deletePatient(@PathVariable("id", required = true) id: Long) {
+    fun deletePatient(
+        @PathVariable("id", required = true) id: Long
+    ) {
         patientService.deletePatient(id)
     }
 
@@ -36,8 +42,10 @@ class PatientController(
         return patientService.getPatientDetail(id)
     }
 
-    @GetMapping()
-    fun getPatientWithPage(): String {
-        return "Patient getPatientWithPage"
+    @GetMapping
+    fun getPatientWithPage(
+        @ModelAttribute patientSearchRequestDto: PatientSearchRequestDto
+    ): List<PatientPageResponseDto> {
+        return patientService.getPatientWithPage(patientSearchRequestDto)
     }
 }

@@ -36,6 +36,19 @@ Content-Type: application/json
 GET http://localhost:8080/api/v1/patients/2
 Content-Type: application/json
 
-### 환자 조회 페이징 및 검색
+### 환자 조회 검색
 GET http://localhost:8080/api/v1/patients
+Content-Type: application/json
+
+### 환자 조회 검색 - 환자 이름
+GET http://localhost:8080/api/v1/patients?patientName=김환자3
+Content-Type: application/json
+
+
+### 환자 조회 검색 - 환자 등록 번호이름
+GET http://localhost:8080/api/v1/patients?patientRegistrationNumber=4940786112712
+Content-Type: application/json
+
+### 환자 조회 검색 - 환자 생일
+GET http://localhost:8080/api/v1/patients?birthDay=1990-05-31
 Content-Type: application/json

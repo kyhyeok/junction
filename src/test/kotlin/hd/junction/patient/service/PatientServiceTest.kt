@@ -1,6 +1,7 @@
 package hd.junction.patient.service
 
 import hd.junction.patient.fixture.PatientFixture.testPatientCreateRequestFixture
+import hd.junction.patient.fixture.PatientFixture.testPatientSearchRequestDtoFixture
 import hd.junction.patient.infrastructure.PatientRepository
 import org.assertj.core.api.Assertions.assertThat
 import org.assertj.core.api.Assertions.assertThatThrownBy
@@ -10,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.context.SpringBootTest
 import org.springframework.test.context.ActiveProfiles
 import org.springframework.transaction.annotation.Transactional
+import java.time.LocalDate
 
 
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
@@ -179,6 +181,7 @@ class PatientServiceTest @Autowired constructor(
     }
 
     @Test
+    @Transactional
     @DisplayName("환자 자세히 조회 성공 - 방문 이력 없음")
     fun getPatientDetail_When_NotVisited() {
         val request = testPatientCreateRequestFixture()
@@ -196,6 +199,77 @@ class PatientServiceTest @Autowired constructor(
             assertThat(patientDetail.visits).isEmpty()
         }
 
-        patientService.deletePatient(savedPatient.id)
+        patientRepository.deleteById(savedPatient.id)
+    }
+
+    @Test
+    @DisplayName("환자 목록 조회 - 환자 이름 검색")
+    fun getPatientWithPage_When_SearchPatientName() {
+        val requestDto = testPatientSearchRequestDtoFixture(
+            patientName = "김환자1"
+        )
+        val foundPatients = patientService.getPatientWithPage(requestDto)
+        foundPatients.forEach { patient ->
+            with(patient) {
+                assertThat(patientName).contains("김환자1")
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("환자 목록 조회 - 환자 등록 번호 검색")
+    fun getPatientWithPage_When_SearchPatientRegistrationNumber() {
+        val requestDto = testPatientSearchRequestDtoFixture(
+            patientRegistrationNumber = "1122331122331"
+        )
+        val foundPatients = patientService.getPatientWithPage(requestDto)
+        foundPatients.forEach { patient ->
+            with(patient) {
+                assertThat(patientRegistrationNumber).contains("1122331122331")
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("환자 목록 조회 - 생년월일 검색")
+    fun getPatientWithPage_When_SearchBirthDay() {
+        val requestDto = testPatientSearchRequestDtoFixture(
+            birthDay = LocalDate.of(1990, 1, 1)
+        )
+        val foundPatients = patientService.getPatientWithPage(requestDto)
+        foundPatients.forEach { patient ->
+            with(patient) {
+                assertThat(birthDay).contains("1990-01-01")
+            }
+        }
+    }
+
+    @Test
+    @DisplayName("환자 목록 조회 - null 검증")
+    fun getPatientWithPage_When_PhoneNumberIsNull_Then_DisplaysDash() {
+        // 테스트 데이터에 birthDay, phoneNumber, visitDate null인 환자가 최소 한 명 있어야 함
+
+        // given
+        val requestDto = testPatientSearchRequestDtoFixture()
+
+        // when
+        val foundPatients = patientService.getPatientWithPage(requestDto)
+
+        // then birthDay
+        val patientsWithNullBirthday = foundPatients.filter { it.birthDay == "-" }
+        assertThat(patientsWithNullBirthday).isNotEmpty()
+        patientsWithNullBirthday.forEach { assertThat(it.birthDay).isEqualTo("-") }
+
+
+        // then phoneNumber
+        val patientsWithNullPhone = foundPatients.filter { it.phoneNumber == "-" }
+        assertThat(patientsWithNullPhone).isNotEmpty()
+        patientsWithNullPhone.forEach { assertThat(it.phoneNumber).isEqualTo("-") }
+
+
+        // then visitDate
+        val patientsWithNullVisitDate = foundPatients.filter { it.visitDate == "-" }
+        assertThat(patientsWithNullVisitDate).isNotEmpty()
+        patientsWithNullVisitDate.forEach { assertThat(it.visitDate).isEqualTo("-") }
     }
 }

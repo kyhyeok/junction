@@ -19,7 +19,6 @@ class DateInitializer(
     private val patientRepository: PatientRepository,
     private val visitRepository: VisitRepository,
 ) : ApplicationRunner {
-
     @Transactional
     override fun run(args: ApplicationArguments?) {
         // 병원 10개 생성
@@ -33,20 +32,40 @@ class DateInitializer(
             hospitalRepository.save(hospital)
         }
 
+        // 테스트 검증을 위한 특정 환자 1명 생성
+        // patientRegistrationNumber, birthDay
+        val patient = Patient(
+            patientName = "나환자",
+            patientRegistrationNumber = "1122331122331",
+            genderCode = "M",
+            birthDay = LocalDate.of(1990, 1, 1),
+            phoneNumber = "010-1234-4321",
+            hospital = hospitalRepository.findById(3L).get()
+        )
+        patientRepository.save(patient)
+
         // 환자 30명 생성
         for (i in 1..30) {
             val year = Random.nextInt(1950, 2006)
             val month = Random.nextInt(1, 13)
             val day = Random.nextInt(1, 28)
+
+            val shouldBirthDayBeNull = Random.nextInt(100) < 40
             val birthDay = LocalDate.of(year, month, day)
+            val finalBirthDay = if (shouldBirthDayBeNull) null else birthDay
 
             val middleNumber = Random.nextInt(1000, 10000)
             val lastNumber = Random.nextInt(1000, 10000)
+
+            val shouldPhoneNumberBeNull = Random.nextInt(100) < 40
             val phoneNumber = "010-${middleNumber}-${lastNumber}"
+            val finalPhoneNumber = if (shouldPhoneNumberBeNull) null else phoneNumber
+
             val genderCode = if (Random.nextBoolean()) "M" else "F"
 
             val hospitalCount = Random.nextInt(1, 6)
             val hospitalIds = (1..5).shuffled().take(hospitalCount)
+
 
             // 각 환자마다 1~5개의 병원 랜덤 배정
             hospitalIds.forEach { hospitalId ->
@@ -56,8 +75,8 @@ class DateInitializer(
                     patientName = "김환자${i}",
                     patientRegistrationNumber = patientRegistrationNumber,
                     genderCode = genderCode,
-                    birthDay = birthDay,
-                    phoneNumber = phoneNumber,
+                    birthDay = finalBirthDay,
+                    phoneNumber = finalPhoneNumber,
                     hospital = hospitalRepository.findById(hospitalId.toLong()).get()
                 )
                 patientRepository.save(patient)

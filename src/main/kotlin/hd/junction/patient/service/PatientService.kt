@@ -5,8 +5,11 @@ import hd.junction.hospital.domain.Hospital
 import hd.junction.hospital.infrastructure.HospitalRepository
 import hd.junction.patient.domain.Patient
 import hd.junction.patient.dto.request.PatientRequestDto
+import hd.junction.patient.dto.request.PatientSearchRequestDto
+import hd.junction.patient.dto.response.PatientPageResponseDto
 import hd.junction.patient.dto.response.PatientResponseDto
 import hd.junction.patient.dto.response.PatientVisitResponseDto
+import hd.junction.patient.infrastructure.PatientQuerydslRepository
 import hd.junction.patient.infrastructure.PatientRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -18,10 +21,13 @@ class PatientService(
     private val codeRepository: CodeRepository,
     private val hospitalRepository: HospitalRepository,
     private val patientRepository: PatientRepository,
+    private val patientQuerydslRepository: PatientQuerydslRepository,
 ) {
 
     @Transactional
-    fun createPatient(patientRequestDto: PatientRequestDto): PatientResponseDto {
+    fun createPatient(
+        patientRequestDto: PatientRequestDto
+    ): PatientResponseDto {
         validatedGenderCode(patientRequestDto)
 
         val hospital = hospitalRepository.findById(patientRequestDto.hospitalId)
@@ -35,7 +41,9 @@ class PatientService(
     }
 
     @Transactional
-    fun updatePatient(id: Long, patientRequestDto: PatientRequestDto): PatientResponseDto {
+    fun updatePatient(
+        id: Long, patientRequestDto: PatientRequestDto
+    ): PatientResponseDto {
         val foundPatient = patientRepository.findById(id)
             .orElseThrow { IllegalArgumentException("확인되지 않은 환자입니다") }
 
@@ -52,7 +60,9 @@ class PatientService(
     }
 
     @Transactional
-    fun deletePatient(id: Long) {
+    fun deletePatient(
+        id: Long
+    ) {
         val foundPatient = patientRepository.findById(id)
             .orElseThrow { IllegalArgumentException("확인되지 않은 환자입니다") }
 
@@ -60,16 +70,27 @@ class PatientService(
     }
 
     @Transactional(readOnly = true)
-    fun getPatientDetail(id: Long): PatientVisitResponseDto {
+    fun getPatientDetail(
+        id: Long
+    ): PatientVisitResponseDto {
         val foundPatient = patientRepository.findById(id)
             .orElseThrow { IllegalArgumentException("확인되지 않은 환자입니다") }
 
         return PatientVisitResponseDto.of(foundPatient, foundPatient.visits)
     }
 
+    @Transactional(readOnly = true)
+    fun getPatientWithPage(
+        patientSearchRequestDto: PatientSearchRequestDto
+    ): List<PatientPageResponseDto> {
+        return patientQuerydslRepository.getPatientWithPage(patientSearchRequestDto)
+    }
+
 
     //  PatientRequestDto에서 검증하지만, 혹시 모를 잘못된 코드값이 들어올 경우를 대비
-    private fun validatedGenderCode(patientRequestDto: PatientRequestDto) {
+    private fun validatedGenderCode(
+        patientRequestDto: PatientRequestDto
+    ) {
         (codeRepository.findByIdCodeGroupAndIdCode(CODE_GROUP_GENDER, patientRequestDto.genderCode)
             ?: throw IllegalArgumentException("${CODE_GROUP_GENDER}를 확인해주세요"))
     }
