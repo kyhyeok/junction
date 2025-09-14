@@ -28,4 +28,19 @@ class Visit(
     @GeneratedValue(strategy = IDENTITY)
     val id: Long? = null,
 ) {
+    companion object {
+        fun create(
+            reservationDate: LocalDate,
+            visitStateCode: String,
+            hospital: Hospital,
+            patient: Patient
+        ): Visit {
+            return Visit(
+                reservationDate = reservationDate,
+                visitStateCode = visitStateCode,
+                hospital = hospital,
+                patient = patient
+            )
+        }
+    }
 }

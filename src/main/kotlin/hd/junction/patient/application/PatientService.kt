@@ -2,6 +2,7 @@ package hd.junction.patient.application
 
 import hd.junction.codes.infrastructure.CodeRepository
 import hd.junction.common.util.RandomUtils.generateRandomPatientRegistrationNumber
+import hd.junction.common.util.RandomUtils.getUniquePatientRegistrationNumber
 import hd.junction.hospital.domain.Hospital
 import hd.junction.hospital.infrastructure.HospitalRepository
 import hd.junction.patient.domain.Patient
@@ -37,7 +38,7 @@ class PatientService(
             .orElseThrow { IllegalArgumentException("확인되지 않은 병원 정보입니다") }
 
         val patientRegistrationNumber = getUniquePatientRegistrationNumber(
-            hospital, generateRandomPatientRegistrationNumber()
+            hospital, generateRandomPatientRegistrationNumber(), patientRepository
         )
 
         return Patient.create(patientRequestDto, hospital, patientRegistrationNumber)
@@ -97,21 +98,5 @@ class PatientService(
     ) {
         (codeRepository.findByIdCodeGroupAndIdCode(CODE_GROUP_GENDER, patientRequestDto.genderCode)
             ?: throw IllegalArgumentException("${CODE_GROUP_GENDER}를 확인해주세요"))
-    }
-
-    fun getUniquePatientRegistrationNumber(
-        hospital: Hospital,
-        initialPatientRegistrationNumber: String
-    ): String {
-        var patientRegistrationNumber = initialPatientRegistrationNumber
-
-        while (patientRepository.existsByHospitalAndPatientRegistrationNumber(
-                hospital, patientRegistrationNumber
-            )
-        ) {
-            patientRegistrationNumber = generateRandomPatientRegistrationNumber()
-        }
-
-        return patientRegistrationNumber
     }
 }

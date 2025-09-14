@@ -79,11 +79,14 @@
 - [x] validatedPatientInHospital()에서 getUniquePatientRegistrationNumber()로 변경 (중복 체크 X loop로 중복 안되는 새로운 번호 생성)
 - [x] 파일정리, 오타수정, CHANGELOG.md(작업 내용 기록)
 - [x] 페이지 번호 1번부터 시작하도록 변경 작업, PatientController 테스트 코드 작성, 소스코드 다듬기
-- [] README.md 작성,
+
 
 
 ### 환자 방문 작업
-- [] VisitController, VisitService, DTO 환자방문 등록 작업
-- [] 테스트 코드 작성 및 리팩토링
+- [x] VisitController, VisitService, DTO 환자방문 등록 작업
+- [x] PatientRequestDto 공통 로직 구현 및 리팩토링 작업
+
+### README.md 작성
+- [] README.md 작성
 
 ### 디버깅, 전체 코드 다듬기

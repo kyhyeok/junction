@@ -1,7 +1,7 @@
 package hd.junction.patient.domain
 
-import hd.junction.common.util.RandomUtils.generateRandomPatientRegistrationNumber
 import hd.junction.hospital.domain.Hospital
+import hd.junction.patient.dto.request.PatientInfoRequest
 import hd.junction.patient.dto.request.PatientRequestDto
 import hd.junction.visit.domain.Visit
 import jakarta.persistence.*
@@ -11,10 +11,12 @@ import jakarta.persistence.GenerationType.IDENTITY
 import java.time.LocalDate
 
 @Entity
-@Table(name = "patient", indexes = [
-    Index(name = "idx_patient_registration_number", columnList = "patientRegistrationNumber"),
-    Index(name = "idx_birthDay", columnList = "birthDay")
-])
+@Table(
+    name = "patient", indexes = [
+        Index(name = "idx_patient_registration_number", columnList = "patientRegistrationNumber"),
+        Index(name = "idx_birthDay", columnList = "birthDay")
+    ]
+)
 class Patient(
     @Column(length = 45, nullable = false)
     val patientName: String,
@@ -44,16 +46,16 @@ class Patient(
 ) {
     companion object {
         fun create(
-            patientRequestDto: PatientRequestDto,
+            patientRequest: PatientInfoRequest,
             hospital: Hospital,
             patientRegistrationNumber: String
         ): Patient {
             return Patient(
-                patientRequestDto.patientName,
+                patientRequest.patientName,
                 patientRegistrationNumber,
-                patientRequestDto.genderCode,
-                patientRequestDto.birthDay,
-                patientRequestDto.phoneNumber,
+                patientRequest.genderCode,
+                patientRequest.birthDay,
+                patientRequest.phoneNumber,
                 hospital
             )
         }

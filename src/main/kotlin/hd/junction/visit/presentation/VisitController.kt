@@ -1,5 +1,7 @@
 package hd.junction.visit.presentation
 
+import hd.junction.visit.application.VisitService
+import hd.junction.visit.dto.request.VisitRequestDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -7,25 +9,29 @@ import org.springframework.web.bind.annotation.*
 @RestController
 @RequestMapping("/api/v1/visits")
 class VisitController(
+    private val visitService: VisitService,
 ) {
     @PostMapping()
     fun createVisit(
-
+        @RequestBody visitRequestDto: VisitRequestDto
     ): ResponseEntity<String> {
-        return ResponseEntity.status(HttpStatus.CREATED).body("Visit Created")
+        visitService.createVisit(visitRequestDto)
+        return ResponseEntity.status(HttpStatus.CREATED).body("")
     }
 
     @PatchMapping()
     fun updateVisit(
 
     ): ResponseEntity<String> {
-        return ResponseEntity.ok("Visit Updated")
+        visitService.updateVisit()
+        return ResponseEntity.ok("")
     }
 
     @DeleteMapping()
     fun deleteVisit(
 
     ): ResponseEntity<String> {
+        visitService.deleteVisit()
         return ResponseEntity.noContent().build()
     }
 
@@ -33,7 +39,8 @@ class VisitController(
     fun getVisitDetail(
         @PathVariable("id", required = true) id: Long
     ): ResponseEntity<String> {
-        return ResponseEntity.ok("Visit getVisitDetail $id")
+        visitService.getVisitDetail()
+        return ResponseEntity.ok("")
     }
 }
 

@@ -1,5 +1,7 @@
 package hd.junction.common.util
 
+import hd.junction.hospital.domain.Hospital
+import hd.junction.patient.infrastructure.PatientRepository
 import kotlin.random.Random
 
 object RandomUtils {
@@ -15,5 +17,19 @@ object RandomUtils {
                 append(Random.nextInt(0, 10))
             }
         }
+    }
+
+    fun getUniquePatientRegistrationNumber(
+        hospital: Hospital,
+        initialPatientRegistrationNumber: String,
+        patientRepository: PatientRepository
+    ): String {
+        var patientRegistrationNumber = initialPatientRegistrationNumber
+
+        while (patientRepository.existsByHospitalAndPatientRegistrationNumber(hospital, patientRegistrationNumber)) {
+            patientRegistrationNumber = generateRandomPatientRegistrationNumber()
+        }
+
+        return patientRegistrationNumber
     }
 }

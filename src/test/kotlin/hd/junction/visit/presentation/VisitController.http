@@ -1,0 +1,26 @@
+### 방문환자 등록
+POST http://localhost:8080/api/v1/visits
+Content-Type: application/json
+
+{
+  "reservationDate": "1990-05-31",
+  "visitStateCode": "방문중",
+  "hospitalId": 1,
+  "patientId": 97
+}
+
+### 방문환자 등록
+POST http://localhost:8080/api/v1/visits
+Content-Type: application/json
+
+{
+  "reservationDate": "1996-03-03",
+  "visitStateCode": "취소",
+  "hospitalId": 1,
+  "patientRequest": {
+    "patientName": "호잉루",
+    "genderCode": "F",
+    "birthDay": "1992-07-23",
+    "phoneNumber": "010-8765-4321"
+  }
+}
