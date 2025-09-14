@@ -35,7 +35,7 @@ class PatientService(
         val hospital = hospitalRepository.findById(patientRequestDto.hospitalId)
             .orElseThrow { IllegalArgumentException("확인되지 않은 병원 정보입니다") }
 
-        val patientRegistrationNumber: String = getUniquePatientRegistrationNumber(
+        val patientRegistrationNumber = getUniquePatientRegistrationNumber(
             hospital, generateRandomPatientRegistrationNumber()
         )
 

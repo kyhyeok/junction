@@ -15,7 +15,7 @@ import java.time.LocalDate
 import kotlin.random.Random
 
 @Component
-class DateInitializer(
+class DataInitializer(
     private val hospitalRepository: HospitalRepository,
     private val patientRepository: PatientRepository,
     private val visitRepository: VisitRepository,
