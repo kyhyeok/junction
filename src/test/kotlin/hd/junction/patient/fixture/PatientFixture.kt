@@ -1,6 +1,5 @@
 package hd.junction.patient.fixture
 
-import hd.junction.common.util.RandomUtils.generateRandomPatientRegistrationNumber
 import hd.junction.patient.dto.request.PatientRequestDto
 import hd.junction.patient.dto.request.PatientSearchRequestDto
 import java.time.LocalDate

@@ -123,11 +123,11 @@
 - `hospitalName`: `String` 병원 이름
 - `nursingInstitutionNumber`: `String` - 요양기관번호
 - `hospitalDirector`: `String` - 병원장 이름
-- `patients`: `MutableList<Patient>` -  해당 병원에 등록된 환자 목록 (1:N 관계, Hospital이 주인)
-- `visits`: ` MutableList<Visit>` - 해당 병원에 대한 방문 기록 목록 (1:N 관계, Hospital이 주인)
+- `patients`: `MutableList<Patient>` -  해당 병원에 등록된 환자 목록 (1:N 관계, Patient가 연관관계의 주인)
+- `visits`: ` MutableList<Visit>` - 해당 병원에 대한 방문 기록 목록 (1:N 관계, Visit이 외래키를 소유하므로 연관관계의 주인)
 
 **연관관계**
-- Hospital ↔ Patient: 1:N 양방향 관계 (한 병원은 여러 환자를 가질 수 있음)
+- Hospital ↔ Patient: 1:N 양방향 관계 (한 병원은 여러 환자를 가질 수 있음, Patient가 외래키를 소유하므로 연관관계의 주인)
 - Hospital ↔ Visit: 1:N 양방향 관계 (한 병원은 여러 방문 기록을 가질 수 있음)
 </details>
 
@@ -141,12 +141,12 @@
 - `genderCode`: String - 성별 코드
 - `birthDay`: `LocalDate?` - 생년월일
 - `phoneNumber`: `String?` - 전화번호
-- `hospital`: `Hospital` - 환자가 등록된 병원 (N:1 관계, Patient가 종속됨)
-- `visits`: `MutableList<Visit>` - 환자의 방문 기록 목록 (1:N 관계, Patient가 주인)
+- `hospital`: `Hospital` - 환자가 등록된 병원 (N:1 관계, Patient가 연관관계의 주인 - hospital_id 외래키 소유)
+- `visits`: `MutableList<Visit>` - 환자의 방문 기록 목록 (1:N 관계, Visit이 연관관계의 주인)
 
 **연관관계**
-- Patient ↔ Hospital: N:1 양방향 관계 (여러 환자가 하나의 병원에 속함)
-- Patient ↔ Visit: 1:N 양방향 관계 (한 환자는 여러 방문 기록을 가질 수 있음)
+- Patient ↔ Hospital: N:1 양방향 관계 (여러 환자가 하나의 병원에 속함, Patient가 연관관계의 주인)
+- Patient ↔ Visit: 1:N 양방향 관계 (한 환자는 여러 방문 기록을 가질 수 있음, Visit이 연관관계의 주인)
 
 **행위**
 - `companion object의 create() 팩토리 함수`: 환자 정보를 등록합니다. 병원별로 중복되지 않는 환자등록번호를 자동 생성합니다.
@@ -161,12 +161,12 @@
 - `id`: `Long?` - 환자방문 식별자(기본 키)
 - `reservationDate`: `LocalDate` - 예약 날짜
 - `visitStateCode`: `String` - 방문 상태 코드
-- `hospital`: `Hospital` - 방문한 병원 (N:1 관계, Visit이 종속됨)
-- `patient`: `Patient` - 방문한 환자 (N:1 관계, Visit이 종속됨)
+- `hospital`: `Hospital` - 방문한 병원 (N:1 관계, Visit이 연관관계의 주인 - hospital_id 외래키 소유)
+- `patient`: `Patient` - 방문한 환자 (N:1 관계, Visit이 종속됨, Visit이 연관관계의 주인 - patient_id 외래키 소유)
 
 **연관관계**
-- Visit ↔ Hospital: N:1 양방향 관계 (여러 방문 기록이 하나의 병원에 속함)
-- Visit ↔ Patient: N:1 양방향 관계 (여러 방문 기록이 하나의 환자에 속함)
+- Visit ↔ Hospital: N:1 양방향 관계 (여러 방문 기록이 하나의 병원에 속함, Visit이 연관관계의 주인)
+- Visit ↔ Patient: N:1 양방향 관계 (여러 방문 기록이 하나의 환자에 속함 Visit이 연관관계의 주인)
 
 **행위**
 - `companion object의 create() 팩토리 함수` - 환자방문 정보를 등록합니다.

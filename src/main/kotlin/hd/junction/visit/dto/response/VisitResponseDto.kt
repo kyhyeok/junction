@@ -1,8 +1,6 @@
 package hd.junction.visit.dto.response
 
-import hd.junction.hospital.domain.Hospital
 import hd.junction.hospital.dto.response.HospitalResponseDto
-import hd.junction.patient.domain.Patient
 import hd.junction.patient.dto.response.PatientResponseDto
 import hd.junction.visit.domain.Visit
 import java.time.LocalDate

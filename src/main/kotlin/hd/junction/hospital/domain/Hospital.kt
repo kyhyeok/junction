@@ -27,5 +27,4 @@ class Hospital(
     @Id
     @GeneratedValue(strategy = IDENTITY)
     val id: Long? = null,
-) {
-}
+)

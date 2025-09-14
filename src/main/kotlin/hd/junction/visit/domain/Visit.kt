@@ -2,7 +2,6 @@ package hd.junction.visit.domain
 
 import hd.junction.hospital.domain.Hospital
 import hd.junction.patient.domain.Patient
-import hd.junction.patient.dto.request.PatientRequestDto
 import hd.junction.visit.dto.request.VisitUpdateRequestDto
 import jakarta.persistence.*
 import jakarta.persistence.FetchType.LAZY

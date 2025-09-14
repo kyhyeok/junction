@@ -8,7 +8,6 @@ import hd.junction.patient.dto.request.PatientSearchRequestDto
 import hd.junction.patient.dto.response.PatientPageResponseDto
 import hd.junction.visit.domain.QVisit.visit
 import org.springframework.data.domain.Page
-import org.springframework.data.domain.PageImpl
 import org.springframework.data.domain.Pageable
 import org.springframework.data.support.PageableExecutionUtils
 import org.springframework.stereotype.Component

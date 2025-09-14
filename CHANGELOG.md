@@ -89,3 +89,4 @@
 
 ### README.md 작성
 - [x] README.md 작성 및 visit Controller, visit Service 코드 다듬기
+- [x] README.md 수정 및 사용하지 않는 import 정리
