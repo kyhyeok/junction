@@ -5,7 +5,7 @@ import hd.junction.patient.dto.request.PatientSearchRequestDto
 import hd.junction.patient.dto.response.PatientPageResponseDto
 import hd.junction.patient.dto.response.PatientResponseDto
 import hd.junction.patient.dto.response.PatientVisitResponseDto
-import hd.junction.patient.service.PatientService
+import hd.junction.patient.application.PatientService
 import org.springframework.data.domain.Page
 import org.springframework.data.domain.Pageable
 import org.springframework.data.domain.Sort

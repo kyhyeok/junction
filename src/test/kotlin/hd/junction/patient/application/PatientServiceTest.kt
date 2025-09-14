@@ -1,4 +1,4 @@
-package hd.junction.patient.service
+package hd.junction.patient.application
 
 import hd.junction.patient.fixture.PatientFixture.testPatientRequestFixture
 import hd.junction.patient.fixture.PatientFixture.testPatientSearchRequestDtoFixture

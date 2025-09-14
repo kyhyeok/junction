@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import hd.junction.hospital.infrastructure.HospitalRepository
 import hd.junction.patient.fixture.PatientFixture.testPatientRequestFixture
 import hd.junction.patient.infrastructure.PatientRepository
-import hd.junction.patient.service.PatientService
+import hd.junction.patient.application.PatientService
 import org.assertj.core.api.Assertions.assertThat
 import org.junit.jupiter.api.DisplayName
 import org.junit.jupiter.api.Test

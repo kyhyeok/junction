@@ -1,4 +1,4 @@
-package hd.junction.patient.service
+package hd.junction.patient.application
 
 import hd.junction.codes.infrastructure.CodeRepository
 import hd.junction.common.util.RandomUtils.generateRandomPatientRegistrationNumber
