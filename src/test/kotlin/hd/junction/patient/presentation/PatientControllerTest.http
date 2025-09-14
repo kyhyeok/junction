@@ -51,9 +51,9 @@ GET http://localhost:8080/api/v1/patients?birthDay=1990-05-31
 Content-Type: application/json
 
 ### 환자 목록 조회 검색 - 첫 페이징, 10개
-GET http://localhost:8080/api/v1/patients?page=0&size=10
+GET http://localhost:8080/api/v1/patients?page=1&size=10
 Content-Type: application/json
 
 ### 환자 목록 조회 검색 - 중간 페이징, 20개
-GET http://localhost:8080/api/v1/patients?page=3&size=20
+GET http://localhost:8080/api/v1/patients?page=4&size=20
 Content-Type: application/json

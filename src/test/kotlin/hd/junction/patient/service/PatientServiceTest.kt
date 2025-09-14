@@ -1,7 +1,6 @@
 package hd.junction.patient.service
 
-import hd.junction.hospital.infrastructure.HospitalRepository
-import hd.junction.patient.fixture.PatientFixture.testPatientCreateRequestFixture
+import hd.junction.patient.fixture.PatientFixture.testPatientRequestFixture
 import hd.junction.patient.fixture.PatientFixture.testPatientSearchRequestDtoFixture
 import hd.junction.patient.infrastructure.PatientRepository
 import org.assertj.core.api.Assertions.assertThat
@@ -22,7 +21,6 @@ import java.time.LocalDate
 class PatientServiceTest @Autowired constructor(
     private val patientService: PatientService,
     private val patientRepository: PatientRepository,
-    private val hospitalRepository: HospitalRepository,
 ) {
 
     @Test
@@ -30,7 +28,7 @@ class PatientServiceTest @Autowired constructor(
     @DisplayName("환자 등록 성공")
     fun createPatient_When_AllConditionsAreMet() {
         // given
-        val request = testPatientCreateRequestFixture()
+        val request = testPatientRequestFixture()
 
         // when
         val savedPatient = patientService.createPatient(request)
@@ -51,15 +49,13 @@ class PatientServiceTest @Autowired constructor(
                 assertThat(hospitalDirector).isEqualTo(savedPatient.hospital.hospitalDirector)
             }
         }
-
-        patientRepository.deleteById(savedPatient.id)
     }
 
     @Test
     @DisplayName("환자 등록 실패 - 병원 없음")
     fun createPatient_When_HospitalNotFound() {
         // given
-        val request = testPatientCreateRequestFixture(hospitalId = 1_000_000_000L)
+        val request = testPatientRequestFixture(hospitalId = 1_000_000_000L)
 
         // when && then
         assertThatThrownBy { patientService.createPatient(request) }
@@ -72,10 +68,10 @@ class PatientServiceTest @Autowired constructor(
     @DisplayName("환자 수정 성공")
     fun updatePatient_When_AllConditionsAreMet() {
         // given
-        val createRequest = testPatientCreateRequestFixture()
+        val createRequest = testPatientRequestFixture()
         val savedPatient = patientService.createPatient(createRequest)
 
-        val updateRequest = testPatientCreateRequestFixture(
+        val updateRequest = testPatientRequestFixture(
             hospitalId = 2,
             patientName = "이환자 수정",
             phoneNumber = "010-2222-2222"
@@ -101,15 +97,13 @@ class PatientServiceTest @Autowired constructor(
                 assertThat(hospitalDirector).isEqualTo(updatedPatient.hospital.hospitalDirector)
             }
         }
-
-        patientRepository.deleteById(updatedPatient.id)
     }
 
     @Test
     @DisplayName("환자 수정 실패 - 환자 없음")
     fun updatePatient_When_PatientNotFound() {
         // given
-        val request = testPatientCreateRequestFixture()
+        val request = testPatientRequestFixture()
 
         // when && then
         assertThatThrownBy { patientService.updatePatient(1_000_000_000L, request) }
@@ -118,11 +112,10 @@ class PatientServiceTest @Autowired constructor(
     }
 
     @Test
-    @Transactional
     @DisplayName("환자 삭제 성공")
     fun deletePatient() {
         // given
-        val request = testPatientCreateRequestFixture()
+        val request = testPatientRequestFixture()
         val savedPatient = patientService.createPatient(request)
         assertThat(savedPatient).isNotNull()
 
@@ -176,7 +169,7 @@ class PatientServiceTest @Autowired constructor(
     @DisplayName("환자 자세히 조회 성공 - 방문 이력 없음")
     fun getPatientDetail_When_NotVisited() {
         // given
-        val request = testPatientCreateRequestFixture()
+        val request = testPatientRequestFixture()
         val savedPatient = patientService.createPatient(request)
 
         // when
@@ -193,8 +186,6 @@ class PatientServiceTest @Autowired constructor(
 
             assertThat(patientDetail.visits).isEmpty()
         }
-
-        patientRepository.deleteById(savedPatient.id)
     }
 
     @Test
@@ -284,79 +275,81 @@ class PatientServiceTest @Autowired constructor(
 
 
     @Test
-    @DisplayName("환자 목록 조회 - 첫 페이지, 10개 페이징, id 오름차순 정렬")
-    fun getPatientWithPage_When_PagingFirst10() {
+    @DisplayName("환자 목록 조회 - 첫 페이지 조회")
+    fun getPatientWithPage_When_FirstPage() {
         // given
-        val pageNumber = 10
+        val pageSize = 10
+        val pageNumber = 0
         val totalCount = patientRepository.count()
-        val expectedTotalPages = if (totalCount % pageNumber == 0L) totalCount / pageNumber else (totalCount / pageNumber) + 1
+        val expectedTotalPages =
+            if (totalCount % pageSize == pageNumber.toLong()) totalCount / pageSize else (totalCount / pageSize) + 1
         val requestDto = testPatientSearchRequestDtoFixture()
-        val pageable = PageRequest.of(0, pageNumber, Sort.by(Sort.Direction.ASC, "id"))
+        val pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "id"))
 
         // when
         val foundPatients = patientService.getPatientWithPage(requestDto, pageable)
 
         // then
-        assertThat(foundPatients.content).hasSize(pageNumber)
-        assertThat(foundPatients.number).isEqualTo(0)
-        assertThat(foundPatients.size).isEqualTo(pageNumber)
+        assertThat(foundPatients.content).hasSize(pageSize)
+        assertThat(foundPatients.number).isEqualTo(pageNumber)
+        assertThat(foundPatients.size).isEqualTo(pageSize)
         assertThat(foundPatients.totalElements).isEqualTo(totalCount)
         assertThat(foundPatients.totalPages).isEqualTo(expectedTotalPages)
         assertThat(foundPatients.isFirst).isTrue()
         assertThat(foundPatients.isLast).isFalse()
-        assertThat(foundPatients.numberOfElements).isEqualTo(pageNumber)
+        assertThat(foundPatients.numberOfElements).isEqualTo(pageSize)
         assertThat(foundPatients.sort.isSorted).isTrue()
     }
 
     @Test
-    @DisplayName("환자 목록 조회 - 세 번째 페이지, 10개 페이징, id 오름차순 정렬")
-    fun getPatientWithPage_When_PagingThird10() {
+    @DisplayName("환자 목록 조회 - 중간 페이지 조회")
+    fun getPatientWithPage_When_MiddlePage() {
         // given
-        val pageNumber = 10
+        val pageSize = 10
+        val pageNumber = 4
         val totalCount = patientRepository.count()
-        val expectedTotalPages = if (totalCount % pageNumber == 0L) totalCount / pageNumber else (totalCount / pageNumber) + 1
+        val expectedTotalPages = if (totalCount % pageSize == 0L) totalCount / pageSize else (totalCount / pageSize) + 1
         val requestDto = testPatientSearchRequestDtoFixture()
-        val pageable = PageRequest.of(2, pageNumber, Sort.by(Sort.Direction.ASC, "id"))
+        val pageable = PageRequest.of(pageNumber, pageSize, Sort.by(Sort.Direction.ASC, "id"))
 
         // when
         val foundPatients = patientService.getPatientWithPage(requestDto, pageable)
 
         // then
-        assertThat(foundPatients.content).hasSize(pageNumber)
-        assertThat(foundPatients.number).isEqualTo(2)
-        assertThat(foundPatients.size).isEqualTo(pageNumber)
+        assertThat(foundPatients.content).hasSize(pageSize)
+        assertThat(foundPatients.number).isEqualTo(pageNumber)
+        assertThat(foundPatients.size).isEqualTo(pageSize)
         assertThat(foundPatients.totalElements).isEqualTo(totalCount)
         assertThat(foundPatients.totalPages).isEqualTo(expectedTotalPages)
         assertThat(foundPatients.isFirst).isFalse()
         assertThat(foundPatients.isLast).isFalse()
-        assertThat(foundPatients.numberOfElements).isEqualTo(pageNumber)
+        assertThat(foundPatients.numberOfElements).isEqualTo(pageSize)
         assertThat(foundPatients.sort.isSorted).isTrue()
     }
 
     @Test
-    @DisplayName("환자 목록 조회 - 마지막 페이지")
-    fun getPatientWithPage_When_LastPaging() {
+    @DisplayName("환자 목록 조회 - 마지막 페이지 조회")
+    fun getPatientWithPage_When_LastPage() {
         // given
-        val pageNumber = 10
+        val pageSize = 10
         val totalCount = patientRepository.count()
-        val lastPageNumber = (totalCount / pageNumber).toInt()
-        val pageNumberRemain = (totalCount % pageNumber).toInt()
-        val expectedTotalPages = if (totalCount % pageNumber == 0L) totalCount / pageNumber else (totalCount / pageNumber) + 1
+        val lastPageNumber = (totalCount / pageSize).toInt()
+        val pageSizeRemain = (totalCount % pageSize).toInt()
+        val expectedTotalPages = if (totalCount % pageSize == 0L) totalCount / pageSize else (totalCount / pageSize) + 1
         val requestDto = testPatientSearchRequestDtoFixture()
-        val pageable = PageRequest.of(lastPageNumber, pageNumber, Sort.by(Sort.Direction.ASC, "id"))
+        val pageable = PageRequest.of(lastPageNumber, pageSize, Sort.by(Sort.Direction.ASC, "id"))
 
         // when
         val foundPatients = patientService.getPatientWithPage(requestDto, pageable)
-        println(foundPatients)
 
         // then
         assertThat(foundPatients.number).isEqualTo(lastPageNumber)
-        assertThat(foundPatients.size).isEqualTo(pageNumber)
+        assertThat(foundPatients.size).isEqualTo(pageSize)
         assertThat(foundPatients.totalElements).isEqualTo(totalCount)
         assertThat(foundPatients.totalPages).isEqualTo(expectedTotalPages)
         assertThat(foundPatients.isFirst).isFalse()
         assertThat(foundPatients.isLast).isTrue()
-        assertThat(foundPatients.numberOfElements).isEqualTo(pageNumberRemain)
+        assertThat(foundPatients.numberOfElements).isEqualTo(pageSizeRemain)
         assertThat(foundPatients.sort.isSorted).isTrue()
     }
 }

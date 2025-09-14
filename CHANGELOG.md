@@ -78,7 +78,7 @@
 - [x] generateRandomPatientRegistrationNumber() 함수 구현
 - [x] validatedPatientInHospital()에서 getUniquePatientRegistrationNumber()로 변경 (중복 체크 X loop로 중복 안되는 새로운 번호 생성)
 - [x] 파일정리, 오타수정, CHANGELOG.md(작업 내용 기록)
-- [] 페이지 번호 1번부터 시작하도록 변경 작업, PatientController 테스트 코드 작성
+- [x] 페이지 번호 1번부터 시작하도록 변경 작업, PatientController 테스트 코드 작성, 소스코드 다듬기
 - [] README.md 작성,
 
 

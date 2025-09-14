@@ -1,6 +1,6 @@
 package hd.junction.patient.dto.request
 
-import hd.junction.patient.fixture.PatientFixture.testPatientCreateRequestFixture
+import hd.junction.patient.fixture.PatientFixture.testPatientRequestFixture
 import jakarta.validation.Validation
 import jakarta.validation.Validator
 import jakarta.validation.ValidatorFactory
@@ -30,12 +30,12 @@ class PatientRequestDtoTest {
     @DisplayName("PatientRequestDto - 유효한 값으로 PatientRequestDto 생성")
     fun patientRequestDto_When_AllFieldsAreValid() {
         // given
-        val request = testPatientCreateRequestFixture()
+        val request = testPatientRequestFixture()
 
         // when
         val violations = validator.validate(request)
 
-        // testPatientCreateRequestFixture() 기본값 수정 시 아래 값도 함께 수정 필요
+        // testPatientRequestFixture() 기본값 수정 시 아래 값도 함께 수정 필요
         // then
         assertThat(violations).isEmpty()
         with(request) {
@@ -52,7 +52,7 @@ class PatientRequestDtoTest {
     fun patientRequestDto_When_HospitalIdIsNegative() {
         // given & when & then
         val exception = assertThrows<IllegalArgumentException> {
-            testPatientCreateRequestFixture(hospitalId = -1)
+            testPatientRequestFixture(hospitalId = -1)
         }
 
         assertThat(exception.message).isEqualTo("병원 ID는 0보다 커야 합니다")
@@ -63,7 +63,7 @@ class PatientRequestDtoTest {
     fun patientRequestDto_When_PatientNameIsBlank() {
         // given & when & then
         val exception = assertThrows<IllegalArgumentException> {
-            testPatientCreateRequestFixture(patientName = "")
+            testPatientRequestFixture(patientName = "")
         }
 
         assertThat(exception.message).isEqualTo("환자 이름은 필수 입력 값입니다")
@@ -74,7 +74,7 @@ class PatientRequestDtoTest {
     fun patientRequestDto_When_PatientNameIsTooLong() {
         // given & when & then
         val exception = assertThrows<IllegalArgumentException> {
-            testPatientCreateRequestFixture(patientName = "x".repeat(46))
+            testPatientRequestFixture(patientName = "x".repeat(46))
         }
 
         assertThat(exception.message).isEqualTo("환자 이름은 최대 45자까지 입력 가능합니다")
@@ -85,7 +85,7 @@ class PatientRequestDtoTest {
     fun patientRequestDto_When_GenderCodeIsInvalid() {
         // given & when & then
         val exception = assertThrows<IllegalArgumentException> {
-            testPatientCreateRequestFixture(genderCode = "Z")
+            testPatientRequestFixture(genderCode = "Z")
         }
 
         assertThat(exception.message).isEqualTo("성별 코드는 M(남성) 또는 F(여성)만 입력 가능합니다")
@@ -96,7 +96,7 @@ class PatientRequestDtoTest {
     fun patientRequestDto_When_BirthDayIsFuture() {
         // given & when & then
         val exception = assertThrows<IllegalArgumentException> {
-            testPatientCreateRequestFixture(birthDay = LocalDate.now().plusDays(1))
+            testPatientRequestFixture(birthDay = LocalDate.now().plusDays(1))
         }
 
         assertThat(exception.message).isEqualTo("생년월일은 과거 날짜만 가능합니다")
@@ -107,7 +107,7 @@ class PatientRequestDtoTest {
     fun patientRequestDto_When_PhoneNumberIsTooLong() {
         // given & when & then
         val exception = assertThrows<IllegalArgumentException> {
-            testPatientCreateRequestFixture(phoneNumber = "010-1234-5678-1111-2222")
+            testPatientRequestFixture(phoneNumber = "010-1234-5678-1111-2222")
         }
 
         assertThat(exception.message).isEqualTo("휴대폰 번호는 최대 20자까지 입력 가능합니다")
@@ -141,7 +141,7 @@ class PatientRequestDtoTest {
     ) {
         // given & when & then
         val exception = assertThrows<IllegalArgumentException> {
-            testPatientCreateRequestFixture(phoneNumber = invalidPhoneNumber)
+            testPatientRequestFixture(phoneNumber = invalidPhoneNumber)
         }
 
         assertThat(exception.message).isEqualTo("휴대폰 번호 형식이 올바르지 않습니다. 예: 010-1234-5678 or 01012345678")

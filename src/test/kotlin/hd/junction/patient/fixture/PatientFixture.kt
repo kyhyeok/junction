@@ -6,7 +6,7 @@ import hd.junction.patient.dto.request.PatientSearchRequestDto
 import java.time.LocalDate
 
 object PatientFixture {
-    fun testPatientCreateRequestFixture(
+    fun testPatientRequestFixture(
         hospitalId: Long = 1L,
         patientName: String = "김환자",
         genderCode: String = "F",

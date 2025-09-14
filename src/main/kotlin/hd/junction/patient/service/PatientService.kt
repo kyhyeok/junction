@@ -17,8 +17,6 @@ import org.springframework.data.domain.Pageable
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 
-private const val CODE_GROUP_GENDER: String = "성별코드"
-
 @Service
 class PatientService(
     private val codeRepository: CodeRepository,
@@ -26,6 +24,9 @@ class PatientService(
     private val patientRepository: PatientRepository,
     private val patientQuerydslRepository: PatientQuerydslRepository,
 ) {
+    companion object {
+        private const val CODE_GROUP_GENDER: String = "성별코드"
+    }
     @Transactional
     fun createPatient(
         patientRequestDto: PatientRequestDto
