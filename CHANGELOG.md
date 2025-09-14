@@ -24,7 +24,7 @@
 - [x] PatientRequestDto 구현
 - [x] PatientService.createPatient() 메서드 구현
 - [x] PatientController.createPatient() 메서드 구현
-- [x] PatientResponseDto, HospitalResponseDto 구현
+- [x] PatientHospitalResponseDto, HospitalResponseDto 구현
 - [x] 테스트 코드 작성 (성별 코드 오류, 병원 오류, 환자 저장)
 - [x] 리팩토링 (Service, Entity, TestFixture)
 - [x] PatientRequestDto 검증 require 구현
@@ -52,7 +52,7 @@
 ### 환자 조회 작업
 
 - [x] 병원, 환자, 환자방문 테스트 데이터 dataInitializer 작업
-- [x] PatientResponseDto 구현
+- [x] PatientHospitalResponseDto 구현
 - [x] PatientService.getPatientDetail() 메서드 구현
 - [x] PatientController.getPatientDetail() 메서드 구현
 - [x] 테스트 코드 작성 및 http 파일로 테스트
@@ -85,8 +85,9 @@
 ### 환자 방문 작업
 - [x] VisitController, VisitService, DTO 환자방문 등록 작업
 - [x] PatientRequestDto 공통 로직 구현 및 리팩토링 작업
+- [x] VisitController, VisitService, DTO 환자방문 수정, 삭제, 조회 작업
 
 ### README.md 작성
-- [] README.md 작성
+- [x] README.md 작성
 
 ### 디버깅, 전체 코드 다듬기

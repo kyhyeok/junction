@@ -2,6 +2,8 @@ package hd.junction.visit.domain
 
 import hd.junction.hospital.domain.Hospital
 import hd.junction.patient.domain.Patient
+import hd.junction.patient.dto.request.PatientRequestDto
+import hd.junction.visit.dto.request.VisitUpdateRequestDto
 import jakarta.persistence.*
 import jakarta.persistence.FetchType.LAZY
 import jakarta.persistence.GenerationType.IDENTITY
@@ -42,5 +44,17 @@ class Visit(
                 patient = patient
             )
         }
+    }
+
+    fun update(
+        visitUpdateRequestDto: VisitUpdateRequestDto
+    ): Visit {
+        return Visit(
+            reservationDate = visitUpdateRequestDto.reservationDate,
+            visitStateCode = visitUpdateRequestDto.visitStateCode,
+            hospital = this.hospital,
+            patient = this.patient,
+            id = this.id
+        )
     }
 }

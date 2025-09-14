@@ -1,10 +1,9 @@
 package hd.junction.visit.dto.request
 
-import hd.junction.patient.dto.request.PatientRequestDto
 import hd.junction.patient.dto.request.VisitPatientRequestDto
 import java.time.LocalDate
 
-data class VisitRequestDto(
+data class VisitCreateRequestDto(
     val reservationDate: LocalDate,
 
     val visitStateCode: String,
@@ -21,3 +20,9 @@ data class VisitRequestDto(
         }
     }
 }
+
+data class VisitUpdateRequestDto(
+    val reservationDate: LocalDate,
+
+    val visitStateCode: String
+) 

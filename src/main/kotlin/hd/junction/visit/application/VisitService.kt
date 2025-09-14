@@ -7,7 +7,9 @@ import hd.junction.hospital.infrastructure.HospitalRepository
 import hd.junction.patient.domain.Patient
 import hd.junction.patient.infrastructure.PatientRepository
 import hd.junction.visit.domain.Visit
-import hd.junction.visit.dto.request.VisitRequestDto
+import hd.junction.visit.dto.request.VisitCreateRequestDto
+import hd.junction.visit.dto.request.VisitUpdateRequestDto
+import hd.junction.visit.dto.response.VisitResponseDto
 import hd.junction.visit.infrastructure.VisitRepository
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
@@ -20,46 +22,66 @@ class VisitService(
 ) {
     @Transactional
     fun createVisit(
-        visitRequestDto: VisitRequestDto
+        VisitCreateRequestDto: VisitCreateRequestDto
     ) {
-        val hospital = hospitalRepository.findById(visitRequestDto.hospitalId)
+        val foundHospital = hospitalRepository.findById(VisitCreateRequestDto.hospitalId)
             .orElseThrow { IllegalArgumentException("확인되지 않은 병원 정보입니다") }
 
         val patientRegistrationNumber = getUniquePatientRegistrationNumber(
-            hospital, generateRandomPatientRegistrationNumber(), patientRepository
+            foundHospital, generateRandomPatientRegistrationNumber(), patientRepository
         )
 
-        val patient = getOrCreatePatient(visitRequestDto, hospital, patientRegistrationNumber)
+        val patient = getOrCreatePatient(VisitCreateRequestDto, foundHospital, patientRegistrationNumber)
 
-        val visit = Visit.create(visitRequestDto.reservationDate, visitRequestDto.visitStateCode, hospital, patient)
+        val visit = Visit.create(
+            VisitCreateRequestDto.reservationDate,
+            VisitCreateRequestDto.visitStateCode,
+            foundHospital,
+            patient
+        )
         visitRepository.save(visit)
     }
 
     @Transactional
-    fun updateVisit() {
+    fun updateVisit(
+        id: Long,
+        visitUpdateRequestDto: VisitUpdateRequestDto
+    ) {
+        val foundVisit = visitRepository.findById(id)
+            .orElseThrow { IllegalArgumentException("확인되지 않은 방문 환자 정보입니다") }
 
+        val updatedVisit = foundVisit.update(visitUpdateRequestDto)
+        visitRepository.save(updatedVisit)
     }
 
     @Transactional
-    fun deleteVisit() {
+    fun deleteVisit(
+        id: Long
+    ) {
+        val foundVisit = visitRepository.findById(id)
+            .orElseThrow { IllegalArgumentException("확인되지 않은 방문 환자 정보입니다") }
 
+        visitRepository.delete(foundVisit)
     }
 
     @Transactional(readOnly = false)
-    fun getVisitDetail() {
+    fun getVisitDetail(id: Long): VisitResponseDto {
+        val foundVisit = visitRepository.findById(id)
+            .orElseThrow { IllegalArgumentException("확인되지 않은 방문 환자 정보입니다") }
 
+        return VisitResponseDto.of(foundVisit)
     }
 
     private fun getOrCreatePatient(
-        visitRequestDto: VisitRequestDto,
+        VisitCreateRequestDto: VisitCreateRequestDto,
         hospital: Hospital,
         patientRegistrationNumber: String
     ): Patient {
         val patient = when {
-            visitRequestDto.patientId != null -> patientRepository.findById(visitRequestDto.patientId)
+            VisitCreateRequestDto.patientId != null -> patientRepository.findById(VisitCreateRequestDto.patientId)
                 .orElseThrow { IllegalArgumentException("확인되지 않은 환자 정보입니다") }
 
-            else -> visitRequestDto.patientRequest?.let { request ->
+            else -> VisitCreateRequestDto.patientRequest?.let { request ->
                 patientRepository.save(
                     Patient.create(request, hospital, patientRegistrationNumber)
                 )

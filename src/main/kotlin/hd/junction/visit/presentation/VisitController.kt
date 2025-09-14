@@ -1,7 +1,9 @@
 package hd.junction.visit.presentation
 
 import hd.junction.visit.application.VisitService
-import hd.junction.visit.dto.request.VisitRequestDto
+import hd.junction.visit.dto.request.VisitCreateRequestDto
+import hd.junction.visit.dto.request.VisitUpdateRequestDto
+import hd.junction.visit.dto.response.VisitResponseDto
 import org.springframework.http.HttpStatus
 import org.springframework.http.ResponseEntity
 import org.springframework.web.bind.annotation.*
@@ -13,34 +15,35 @@ class VisitController(
 ) {
     @PostMapping()
     fun createVisit(
-        @RequestBody visitRequestDto: VisitRequestDto
+        @RequestBody VisitCreateRequestDto: VisitCreateRequestDto
     ): ResponseEntity<String> {
-        visitService.createVisit(visitRequestDto)
+        visitService.createVisit(VisitCreateRequestDto)
         return ResponseEntity.status(HttpStatus.CREATED).body("")
     }
 
-    @PatchMapping()
+    @PatchMapping("/{id}")
     fun updateVisit(
-
+        @PathVariable("id", required = true) id: Long,
+        @RequestBody visitUpdateRequestDto: VisitUpdateRequestDto
     ): ResponseEntity<String> {
-        visitService.updateVisit()
+        visitService.updateVisit(id, visitUpdateRequestDto)
         return ResponseEntity.ok("")
     }
 
-    @DeleteMapping()
+    @DeleteMapping("/{id}")
     fun deleteVisit(
-
-    ): ResponseEntity<String> {
-        visitService.deleteVisit()
+        @PathVariable("id", required = true) id: Long
+    ): ResponseEntity<Unit> {
+        visitService.deleteVisit(id)
         return ResponseEntity.noContent().build()
     }
 
     @GetMapping("/{id}")
     fun getVisitDetail(
         @PathVariable("id", required = true) id: Long
-    ): ResponseEntity<String> {
-        visitService.getVisitDetail()
-        return ResponseEntity.ok("")
+    ): ResponseEntity<VisitResponseDto> {
+        val response = visitService.getVisitDetail(id)
+        return ResponseEntity.ok(response)
     }
 }
 

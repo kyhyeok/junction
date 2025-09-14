@@ -11,11 +11,33 @@ data class PatientResponseDto(
     val genderCode: String,
     val birthDay: LocalDate?,
     val phoneNumber: String?,
-    val hospital: HospitalResponseDto,
 ) {
     companion object {
         fun of (patient: Patient): PatientResponseDto {
             return PatientResponseDto(
+                id = patient.id!!,
+                patientName = patient.patientName,
+                patientRegistrationNumber = patient.patientRegistrationNumber,
+                genderCode = patient.genderCode,
+                birthDay = patient.birthDay,
+                phoneNumber = patient.phoneNumber,
+            )
+        }
+    }
+}
+
+data class PatientHospitalResponseDto(
+    val id: Long,
+    val patientName: String,
+    val patientRegistrationNumber: String,
+    val genderCode: String,
+    val birthDay: LocalDate?,
+    val phoneNumber: String?,
+    val hospital: HospitalResponseDto,
+) {
+    companion object {
+        fun of (patient: Patient): PatientHospitalResponseDto {
+            return PatientHospitalResponseDto(
                 id = patient.id!!,
                 patientName = patient.patientName,
                 patientRegistrationNumber = patient.patientRegistrationNumber,

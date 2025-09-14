@@ -3,7 +3,7 @@ package hd.junction.patient.presentation
 import hd.junction.patient.dto.request.PatientRequestDto
 import hd.junction.patient.dto.request.PatientSearchRequestDto
 import hd.junction.patient.dto.response.PatientPageResponseDto
-import hd.junction.patient.dto.response.PatientResponseDto
+import hd.junction.patient.dto.response.PatientHospitalResponseDto
 import hd.junction.patient.dto.response.PatientVisitResponseDto
 import hd.junction.patient.application.PatientService
 import org.springframework.data.domain.Page
@@ -22,7 +22,7 @@ class PatientController(
     @PostMapping
     fun createPatient(
         @RequestBody patientRequestDto: PatientRequestDto
-    ): ResponseEntity<PatientResponseDto> {
+    ): ResponseEntity<PatientHospitalResponseDto> {
         val response = patientService.createPatient(patientRequestDto)
         return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
@@ -31,7 +31,7 @@ class PatientController(
     fun updatePatient(
         @PathVariable("id", required = true) id: Long,
         @RequestBody patientRequestDto: PatientRequestDto
-    ): ResponseEntity<PatientResponseDto> {
+    ): ResponseEntity<PatientHospitalResponseDto> {
         val response = patientService.updatePatient(id, patientRequestDto)
         return ResponseEntity.ok(response)
     }

@@ -9,7 +9,7 @@ import hd.junction.patient.domain.Patient
 import hd.junction.patient.dto.request.PatientRequestDto
 import hd.junction.patient.dto.request.PatientSearchRequestDto
 import hd.junction.patient.dto.response.PatientPageResponseDto
-import hd.junction.patient.dto.response.PatientResponseDto
+import hd.junction.patient.dto.response.PatientHospitalResponseDto
 import hd.junction.patient.dto.response.PatientVisitResponseDto
 import hd.junction.patient.infrastructure.PatientQuerydslRepository
 import hd.junction.patient.infrastructure.PatientRepository
@@ -31,7 +31,7 @@ class PatientService(
     @Transactional
     fun createPatient(
         patientRequestDto: PatientRequestDto
-    ): PatientResponseDto {
+    ): PatientHospitalResponseDto {
         validatedGenderCode(patientRequestDto)
 
         val hospital = hospitalRepository.findById(patientRequestDto.hospitalId)
@@ -43,13 +43,13 @@ class PatientService(
 
         return Patient.create(patientRequestDto, hospital, patientRegistrationNumber)
             .let { patient -> patientRepository.save(patient) }
-            .let { patient -> PatientResponseDto.of(patient) }
+            .let { patient -> PatientHospitalResponseDto.of(patient) }
     }
 
     @Transactional
     fun updatePatient(
         id: Long, patientRequestDto: PatientRequestDto
-    ): PatientResponseDto {
+    ): PatientHospitalResponseDto {
         val foundPatient = patientRepository.findById(id)
             .orElseThrow { IllegalArgumentException("확인되지 않은 환자입니다") }
 
@@ -60,7 +60,7 @@ class PatientService(
 
         return foundPatient.update(patientRequestDto, hospital)
             .let { patient -> patientRepository.save(patient) }
-            .let { patient -> PatientResponseDto.of(patient) }
+            .let { patient -> PatientHospitalResponseDto.of(patient) }
     }
 
     @Transactional
