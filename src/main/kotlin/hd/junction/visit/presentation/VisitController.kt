@@ -16,18 +16,18 @@ class VisitController(
     @PostMapping()
     fun createVisit(
         @RequestBody VisitCreateRequestDto: VisitCreateRequestDto
-    ): ResponseEntity<String> {
-        visitService.createVisit(VisitCreateRequestDto)
-        return ResponseEntity.status(HttpStatus.CREATED).body("")
+    ): ResponseEntity<VisitResponseDto> {
+        val response = visitService.createVisit(VisitCreateRequestDto)
+        return ResponseEntity.status(HttpStatus.CREATED).body(response)
     }
 
     @PatchMapping("/{id}")
     fun updateVisit(
         @PathVariable("id", required = true) id: Long,
         @RequestBody visitUpdateRequestDto: VisitUpdateRequestDto
-    ): ResponseEntity<String> {
-        visitService.updateVisit(id, visitUpdateRequestDto)
-        return ResponseEntity.ok("")
+    ): ResponseEntity<VisitResponseDto> {
+        val response = visitService.updateVisit(id, visitUpdateRequestDto)
+        return ResponseEntity.ok(response)
     }
 
     @DeleteMapping("/{id}")
@@ -46,4 +46,3 @@ class VisitController(
         return ResponseEntity.ok(response)
     }
 }
-

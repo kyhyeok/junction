@@ -88,6 +88,4 @@
 - [x] VisitController, VisitService, DTO 환자방문 수정, 삭제, 조회 작업
 
 ### README.md 작성
-- [x] README.md 작성
-
-### 디버깅, 전체 코드 다듬기
+- [x] README.md 작성 및 visit Controller, visit Service 코드 다듬기

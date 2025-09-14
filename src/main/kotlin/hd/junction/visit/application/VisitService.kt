@@ -23,7 +23,7 @@ class VisitService(
     @Transactional
     fun createVisit(
         VisitCreateRequestDto: VisitCreateRequestDto
-    ) {
+    ): VisitResponseDto {
         val foundHospital = hospitalRepository.findById(VisitCreateRequestDto.hospitalId)
             .orElseThrow { IllegalArgumentException("확인되지 않은 병원 정보입니다") }
 
@@ -33,25 +33,29 @@ class VisitService(
 
         val patient = getOrCreatePatient(VisitCreateRequestDto, foundHospital, patientRegistrationNumber)
 
-        val visit = Visit.create(
+        return Visit.create(
             VisitCreateRequestDto.reservationDate,
             VisitCreateRequestDto.visitStateCode,
             foundHospital,
             patient
-        )
-        visitRepository.save(visit)
+        ).let { visit ->
+            visitRepository.save(visit).let { savedVisit ->
+                VisitResponseDto.of(savedVisit)
+            }
+        }
     }
 
     @Transactional
     fun updateVisit(
         id: Long,
         visitUpdateRequestDto: VisitUpdateRequestDto
-    ) {
+    ): VisitResponseDto {
         val foundVisit = visitRepository.findById(id)
             .orElseThrow { IllegalArgumentException("확인되지 않은 방문 환자 정보입니다") }
 
         val updatedVisit = foundVisit.update(visitUpdateRequestDto)
-        visitRepository.save(updatedVisit)
+        val savedUpdate = visitRepository.save(updatedVisit)
+        return VisitResponseDto.of(savedUpdate)
     }
 
     @Transactional
